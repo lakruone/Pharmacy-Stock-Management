@@ -1,0 +1,10 @@
+
+.shadow {
+	background-color: #1E90FF;
+	display: block
+}
+
+.shadow :hover{
+	background-color: #fff;
+}
+

@@ -1,0 +1,48 @@
+/*.navbar {
+  background:#170303;
+   display: block;
+}
+
+.nav-link,
+.navbar-brand {
+  color: #fff;
+  cursor: pointer;
+}
+
+
+.nav-link {
+  margin-right: 1em !important;
+}
+.navbar-brand:hover {
+  color: #FFA500;
+}
+.nav-link:hover {
+  color: #FFA500;
+}*/
+
+/*.navbar-collapse {
+  justify-content: flex-end;
+}*/
+
+
+
+#navbar {
+  position: sticky;
+  top: 0; /* Stay on top */
+  z-index: 1;
+  width: 100%; /* Full width */
+  transition: top 0.3s; /* Transition effect when sliding down (and up) */
+
+}
+
+#navbar li {
+  display: block;
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+#navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}

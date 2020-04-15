@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width-device-width, initial-scale-1.0">
+    <title>Responsive site : HTML</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+
+  </head>
+  <body>
+    <header>
+
+
+      <div class="logo-container">
+        <img src="img/logo.png" alt="logo">
+        <h4>lakru-creations</h4>
+      </div>
+      <input type="checkbox" id="check">
+      <label for="check" class="checkbtn">
+        <i class="fa fa-bars"></i>
+      </label>
+      <nav>
+        <ul>
+          <li class="hov"> <a class="nav-link" href="#" >Specs</a> </li>
+          <li class="hov"> <a class="nav-link" href="#">About</a> </li>
+          <li class="hov"> <a class="nav-link" href="#">Login</a> </li>
+        </ul>
+      </nav>
+
+    </header>
+
+    <main>
+      <section class="presentation">
+        <div class="form-adj">
+
+        <div id="form-area" class="form-area">
+
+            <div class="button-box">
+              <div id="btn"></div>
+              <button type="button" name="button" class="toggle-btn" onclick="login()">Login</button>
+              <button type="button" name="button" class="toggle-btn" onclick="register( )">Register</button>
+            </div>
+
+            <form id="login" class="input-group">
+              <input type="text" class="input-field" placeholder="Enter Username" required>
+              <input type="text" class="input-field" placeholder="Enter Password" required>
+              <input type="checkbox" class="check-box"><span>Remember Password</span>
+              <button type="button" class="submit-btn">Login</button>
+            </form>
+
+            <form id="register" class="input-group">
+              <input type="text" class="input-field" placeholder="Enter Username*" required>
+              <input type="text" class="input-field" placeholder="Enter First Name">
+              <input type="text" class="input-field" placeholder="Enter Last Name">
+              <input type="text" class="input-field" placeholder="Enter First Name">
+              <input type="email" class="input-field" placeholder="Enter Email*" required>
+              <input type="text" class="input-field" placeholder="Enter Password*" required>
+              <input type="text" class="input-field" placeholder="Retype Password*" required>
+              <!-- <input type="checkbox" class="check-box"><span>Remember Password</span> -->
+              <button type="button" class="submit-btn reg">Register</button>
+            </form>
+
+        </div>
+        </div>
+
+        <div class="description">
+            <div class="intro-text">
+              <h1>Laptop for the future</h1>
+              <p>Lorem ipsum dolor sit amet, consectetu alkns ajkdnvadva fa
+              Lorem ipsum dolor sit amet, consectetu alkns ajkdnvadva fa
+                fnaoefunt mollit anim id est laborum.</p>
+            </div>
+        </div>
+
+
+        <!-- <div class="introduction">
+          <div class="intro-text">
+            <h1>Laptop for the future</h1>
+            <p>Lorem ipsum dolor sit amet, consectetu alkns ajkdnvadva fa
+            Lorem ipsum dolor sit amet, consectetu alkns ajkdnvadva fa
+              fnaoefunt mollit anim id est laborum.</p>
+          </div>
+          <div class="call-to-action">
+            <button type="button" class="cta-select" name="button">14 Inch</button>
+            <button type="button" class="cta-add" name="button">Add To Cart</button>
+          </div>
+        </div>
+
+        <div class="cover">
+          <img src="img/laptop.png" alt="laptop">
+        </div> -->
+      </section>
+    </main>
+
+    <img class="large-circle" src="img/circle-large.png" alt="">
+    <img class="medium-circle" src="img/circle.png" alt="">
+    <img class="small-circle" src="img/circle.png" alt="">
+
+
+<!-- scrypt -->
+<script type="text/javascript">
+  var x = document.getElementById('login');
+  var y = document.getElementById('register');
+  var z = document.getElementById('btn');
+
+  var p = document.getElementById('form-area');
+
+
+  function register(){
+    x.style.left ="-400px";
+    y.style.left = "50px";
+    z.style.left = "110px";
+    p.style.height = "550px";
+  }
+
+  function login(){
+    x.style.left ="50px";
+    y.style.left = "450px";
+    z.style.left = "0";
+    p.style.height = "400px";
+  }
+</script>
+
+  </body>
+</html>
