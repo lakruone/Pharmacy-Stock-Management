@@ -11,23 +11,24 @@
           <button type="button" name="button" class="toggle-btn" onclick="register( )">Register</button>
         </div>
 
-        <form id="login" class="input-group">
-          <input type="text" class="input-field" placeholder="Enter Username" required>
-          <input type="text" class="input-field" placeholder="Enter Password" required>
-          <input type="checkbox" class="check-box"><span>Remember Password</span>
-          <button type="button" class="submit-btn">Login</button>
+        <form id="login" class="input-group" >
+          <input id="username" type="text" class="input-field" placeholder="Enter Username" required>
+          <input id="password" type="text" class="input-field" placeholder="Enter Password" required>
+          <input id="rememberPass" type="checkbox" class="check-box"><span>Remember Password</span>
+          <button id="log-btn" type="button" class="submit-btn" onclick="submit_login()">Login</button>
         </form>
 
         <form id="register" class="input-group">
-          <input type="text" class="input-field" placeholder="Enter Username*" required>
-          <input type="text" class="input-field" placeholder="Enter First Name">
-          <input type="text" class="input-field" placeholder="Enter Last Name">
-          <input type="text" class="input-field" placeholder="Enter First Name">
-          <input type="email" class="input-field" placeholder="Enter Email*" required>
-          <input type="text" class="input-field" placeholder="Enter Password*" required>
-          <input type="text" class="input-field" placeholder="Retype Password*" required>
-          <!-- <input type="checkbox" class="check-box"><span>Remember Password</span> -->
-          <button type="button" class="submit-btn reg">Register</button>
+          <input id="username-r" type="text" class="input-field" placeholder="Enter Username*" required>
+          <input id="firstname" type="text" class="input-field" placeholder="Enter First Name">
+          <input id="lastname" type="text" class="input-field" placeholder="Enter Last Name">
+          <input id="email-r" type="email" class="input-field" placeholder="Enter Email*" required>
+          <input id="password-r" type="text" class="input-field" placeholder="Enter Password*" required>
+          <div class="textbox text-center">  </div>
+          <input id="password-2" type="text" class="input-field" placeholder="Retype Password*" required>
+          <input id="phone" type="tel" class="input-field" placeholder="Telephone number*" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+          <div class="textbox text-center">  </div>
+          <button id="reg-btn" type="submit" class="submit-btn reg" onclick="submit_register()">Register</button>
         </form>
 
     </div>
@@ -58,6 +59,8 @@
 
 <!-- scrypt -->
 <script type="text/javascript">
+
+////////////change styles with toggle button/////////////////////
   var x = document.getElementById('login');
   var y = document.getElementById('register');
   var z = document.getElementById('btn');
@@ -76,12 +79,9 @@
     }else {
        y.style.left ="50px";
     }
-
-
   }
 
   function login(){
-
     y.style.left = "450px";
     z.style.left = "0";
     p.style.height = "400px";
@@ -91,7 +91,70 @@
      }else {
         x.style.left ="50px";
      }
+  }
+
+  ///////////////////////// submit login/////////////////////////////////////////////////////
+  function submit_login(){
+    var login_btn = document.getElementById('log-btn');
+    login_btn.style.background = "linear-gradient(to right, #5DADE2,#D6EAF8)";
+    login_btn.style.border = "1px solid #1A5276";
+
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+    console.log(username);
+    console.log(password);
+    var data = {username : username , password :password}
+    $.post("/login", data);
+  }
+
+  ///////////////////////submit register//////////////////////////////////
+  function submit_register(){
+    var reg_btn = document.getElementById('reg-btn');
+    reg_btn.style.background = "linear-gradient(to right, #5DADE2,#D6EAF8)";
+    reg_btn.style.border = "1px solid #1A5276";
+
+    var username = document.getElementById('username-r').value;
+    var firstname = document.getElementById('firstname').value;
+    var lastname = document.getElementById('lastname').value;
+    var email = document.getElementById('email-r').value;
+    var password = document.getElementById('password-r').value;
+    var password2 = document.getElementById('password-2').value;
+    var phone = document.getElementById('phone').value;
+    // console.log(password);
+
+    var data = {username : username ,
+                firstname:firstname,
+                lastname:lastname,
+                email:email,
+                password:password,
+                password2 :password2,
+                phone:phone}
+
+    $.post("/register", data); //last edited here
+  }
+
+//////////////check password////////////////////
+  var code = document.getElementById('password-r');
+
+  code.addEventListener("keyup", function() {
+    checkpassword(code.value);
+  });
+
+  function checkpassword(password) {
+    // console.log("check pass");
+    var display = document.getElementsByClassName("textbox")[0];
+
+
+    if (password.length < 6) {
+      display.innerHTML = "minimum number of characters is 6";
+    } else if (password.length > 12) {
+        display.innerHTML = "maximum number of characters is 20";
+      }else{
+      display.style.display= "none";
+    }//last-edit here
+
 
 
   }
+
 </script>

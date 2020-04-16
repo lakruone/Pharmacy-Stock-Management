@@ -70,6 +70,11 @@
   background: transparent;
 }
 
+.textbox{
+  color: red;
+  font-size: 12px;
+}
+
 .submit-btn{
   font-size: 20px;
   font-weight: 500;
