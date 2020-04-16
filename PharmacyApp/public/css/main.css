@@ -1,5 +1,12 @@
-body {
-  padding: 0;
-  margin: 0;
-  background: #f2f6e9;
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+body{
+  font-family: 'Poppins', sans-serif;
+}
+
+button{
+  font-family: 'Poppins', sans-serif;
 }

@@ -1,32 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width-device-width, initial-scale-1.0">
 
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     {{!-- include custom css file --}}
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/{{style}}"> 
+    <link rel="stylesheet" href="css/{{style}}">
 
-    
+
     <title>{{title}}</title>
 </head>
 
-  <body onload="myFunction()" style="margin:0;">
-
-    <div id="loader"></div>
-
-    <div style="display:none;" id="myDiv">
 
   {{>_navbar}}
-
-
-  {{>_msg}}
 
 
   {{{body}}}
@@ -35,20 +28,7 @@
   {{>_footer}}
 
 
-    </div>
-  
 
-  <script src="jquery-3.4.1.min.js"></script>
-  <script src="bootstrap/js/bootstrap.min.js"></script>
-
-
-  <!-- include custom js file -->
-  <script src="/js/{{script}}"></script>
-  <script src="/js/navbar.js"></script>
-  <script src="/js/main.js"></script>
-     
 
 </body>
 </html>
-
-

@@ -1,48 +1,122 @@
-/*.navbar {
-  background:#170303;
-   display: block;
+
+header{
+  display: flex;
+  /* background-color: #B2BABB ; */
+  width: 90%;
+  margin: auto;
+  height: 10vh;
+  align-items: center;
 }
 
-.nav-link,
-.navbar-brand {
-  color: #fff;
-  cursor: pointer;
+.logo-container{
+  display: flex;
+  flex: 1;
 }
 
-
-.nav-link {
-  margin-right: 1em !important;
-}
-.navbar-brand:hover {
-  color: #FFA500;
-}
-.nav-link:hover {
-  color: #FFA500;
-}*/
-
-/*.navbar-collapse {
-  justify-content: flex-end;
-}*/
-
-
-
-#navbar {
-  position: sticky;
-  top: 0; /* Stay on top */
-  z-index: 1;
-  width: 100%; /* Full width */
-  transition: top 0.3s; /* Transition effect when sliding down (and up) */
-
+.logo-container img{
+  height: 50px;
 }
 
-#navbar li {
-  display: block;
-  color: #f2f2f2;
+.logo-container h4{
+  margin: 5px;
+  color: #5f5f79;
+  font-size: 25px;
+}
+
+nav{
+  flex: 2;
+}
+
+nav ul{
+  display:flex;
+  justify-content: space-around;
+}
+
+nav ul li{
+  list-style: none;
+}
+
+nav ul li a{
   text-decoration: none;
-  font-size: 17px;
+  color: #5f5f79;
+  font-size: 18px;
 }
 
-#navbar a:hover {
-  background-color: #ddd;
-  color: black;
+.checkbtn{
+  font-size: 30px;
+  color: #5f5f79;
+  float: right;
+  line-height: 80px;
+  cursor: pointer;
+  display: none;
 }
+#check{
+  display: none;
+}
+
+
+
+@media  screen and (max-width:1024px) {
+  .checkbtn{
+    display: block;
+  }
+  nav{
+    z-index: 1;
+    position: fixed;
+    width: 100%;
+    height:auto;
+    background:#2471A3;
+    opacity: 0.8;
+    top: 40px;
+    text-align: center;
+    left: 100%;
+    transition: all 0.5s;
+  }
+
+  nav ul {
+    display: block;
+  }
+
+  nav ul li{
+    padding: 20px;
+    cursor: pointer;
+    /* width: 100%; */
+  }
+  nav ul li:hover .nav-link{
+    background: #154360 ;
+  }
+
+  nav ul li a{
+    color: white;
+    width: 100%;
+    font-size: 15px;
+  }
+
+  #check:checked ~ nav{
+    left: 0;
+  }
+
+  .logo-container img{
+    height: 30px;
+  }
+
+  .logo-container h4{
+    font-size: 20px;
+  }
+
+}
+
+
+@media  screen and (max-width:660px) {
+  .checkbtn{
+    font-size: 20px;
+  }
+
+ .logo-container h4{
+   font-size: 15px;
+   }
+
+   header{
+     height: 6vh;
+   }
+ }

@@ -1,16 +1,97 @@
 
+<main>
+  <section class="presentation">
+    <div class="form-adj">
 
-<header class="page-header header container-fluid">
+    <div id="form-area" class="form-area">
 
-		<div class="overlay"></div>
-		<div class="description">
-      	  
-      <h1 class="head-animate">{{heading}}</h1>
-		  <p class="text-animate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque interdum quam odio, quis placerat ante luctus eu. Sed aliquet dolor id sapien rutrum, id vulputate quam iaculis. Suspendisse consectetur mi id libero fringilla, in pharetra sem ullamcorper.</p>
-		  <a href="/register">
-      <button class="btn btn-outline-secondary btn-lg" >Register Now..!</button>
-      </a>
-      
-		</div>
+        <div class="button-box">
+          <div id="btn"></div>
+          <button type="button" name="button" class="toggle-btn" onclick="login()">Login</button>
+          <button type="button" name="button" class="toggle-btn" onclick="register( )">Register</button>
+        </div>
 
-</header>
+        <form id="login" class="input-group">
+          <input type="text" class="input-field" placeholder="Enter Username" required>
+          <input type="text" class="input-field" placeholder="Enter Password" required>
+          <input type="checkbox" class="check-box"><span>Remember Password</span>
+          <button type="button" class="submit-btn">Login</button>
+        </form>
+
+        <form id="register" class="input-group">
+          <input type="text" class="input-field" placeholder="Enter Username*" required>
+          <input type="text" class="input-field" placeholder="Enter First Name">
+          <input type="text" class="input-field" placeholder="Enter Last Name">
+          <input type="text" class="input-field" placeholder="Enter First Name">
+          <input type="email" class="input-field" placeholder="Enter Email*" required>
+          <input type="text" class="input-field" placeholder="Enter Password*" required>
+          <input type="text" class="input-field" placeholder="Retype Password*" required>
+          <!-- <input type="checkbox" class="check-box"><span>Remember Password</span> -->
+          <button type="button" class="submit-btn reg">Register</button>
+        </form>
+
+    </div>
+    </div>
+
+    <div class="description">
+        <div class="intro-text">
+          <h1>We provide you a platform to...</h1>
+          <ul>
+            <li>Manage your daily sales.</li>
+            <li>Manage your stocks.</li>
+            <li>Get your sales reports.</li>
+          </ul>
+        </div>
+    </div>
+
+
+  </section>
+</main>
+
+<img class="large-circle" src="img/circle-large.png" alt="">
+<img class="medium-circle" src="img/circle.png" alt="">
+<img class="small-circle" src="img/circle.png" alt="">
+
+
+
+
+
+<!-- scrypt -->
+<script type="text/javascript">
+  var x = document.getElementById('login');
+  var y = document.getElementById('register');
+  var z = document.getElementById('btn');
+
+  var p = document.getElementById('form-area');
+  var screen_size = window.matchMedia("(max-width: 660px)");
+
+
+  function register(){
+    x.style.left ="-400px";
+    z.style.left = "110px";
+    p.style.height = "550px";
+
+    if (screen_size.matches) {
+      y.style.left ="30px";
+    }else {
+       y.style.left ="50px";
+    }
+
+
+  }
+
+  function login(){
+
+    y.style.left = "450px";
+    z.style.left = "0";
+    p.style.height = "400px";
+
+     if (screen_size.matches) {
+       x.style.left ="30px";
+     }else {
+        x.style.left ="50px";
+     }
+
+
+  }
+</script>

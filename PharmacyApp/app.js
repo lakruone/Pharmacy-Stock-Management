@@ -1,7 +1,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session');
 
@@ -10,14 +10,14 @@ const app = express();
 const User = require('./routes/User');
 
 // Map global promise - get rid of warning
-mongoose.Promise = global.Promise;
+// mongoose.Promise = global.Promise;
 
 // Connect to mongoose
-mongoose.connect('mongodb://localhost/CHRN_Sales', {
-  useNewUrlParser: true
-})
-  .then(() => console.log('MongoDB Connected...'))
-  .catch(err => console.log(err));
+// mongoose.connect('mongodb://localhost/CHRN_Sales', {
+//   useNewUrlParser: true
+// })
+//   .then(() => console.log('MongoDB Connected...'))
+//   .catch(err => console.log(err));
 
 
 

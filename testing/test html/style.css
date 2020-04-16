@@ -80,6 +80,7 @@ nav ul li a{
 
 .form-adj{
   flex: 1;
+  padding: 40px;
 }
 .form-area{
   width: 380px;
@@ -158,6 +159,7 @@ nav ul li a{
   margin: 30px 10px 30px 0;
 }
 
+
 span{
   color: #777;
   font-size: 12px;
@@ -176,14 +178,6 @@ span{
 
 /* description area */
 
-/* .cover {
-  height: 60vh
-}
-.cover img{
-  height: 100%;
-  filter: drop-shadow(0px 8px 5px black);
-  animation: drop_lap 1.5s ease;
-} */
 .description{
   flex: 2;
 }
@@ -196,43 +190,14 @@ span{
   -webkit-text-fill-color: transparent;
 }
 
-.intro-text p{
+.intro-text ul li{
+  list-style:none;
   margin-top: 5px;
   font-size: 22px;
   color: #5f5f79;
+  animation: drop_description 1.5s ease;
 }
 
-.call-to-action{
-  padding: 50px 0 0 0;
-}
-
-.cta-select{
-  border: 2px solid #2E86C1;
-  background: transparent;
-  color: #2E86C1;
-  width: 150px;
-  height: 50px;
-  cursor: pointer;
-  font-size: 16px;
-  /* margin-left: 30px; */
-}
-.cta-select:hover{
-  background: #EBF5FB;
-}
-
-.cta-add{
-  border: none;
-  background: #2E86C1;
-  color: #fff;
-  width: 150px;
-  height: 50px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-left: 10px;
-}
-.cta-add:hover{
-  background: #154360;
-}
 
 .large-circle{
   position: absolute;
@@ -261,7 +226,15 @@ span{
   opacity: 0.3;
 }
 
-@keyframes drop_lap {
+.copyright{
+  margin-top: 10px;
+  background-color: #273746;
+  padding: 5px;
+  color: white;
+  text-align: center;
+}
+
+@keyframes drop_description {
   0%{
     opacity: 0;
     transform: translateY(-80px);
@@ -329,9 +302,6 @@ span{
   .intro-text h1{
     font-size: 30px;
   }
-  .intro-text p{
-    font-size: 20px;
-  }
 
 }
 
@@ -352,8 +322,25 @@ span{
   .intro-text h1{
     font-size: 20px;
   }
-  .intro-text p{
-    font-size: 15px;
+  .intro-text ul li{
+    font-size: 20px;
+  }
+
+  /* form area */
+  .form-area{
+    width: 300px;
+  }
+
+  .input-group{
+    width: 250px;
+  }
+
+  #login{
+    left: 30px;
+  }
+
+  #register{
+    left: 450px;
   }
 
 }

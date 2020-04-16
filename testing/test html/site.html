@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+
 
   </head>
   <body>
@@ -68,36 +68,29 @@
 
         <div class="description">
             <div class="intro-text">
-              <h1>Laptop for the future</h1>
-              <p>Lorem ipsum dolor sit amet, consectetu alkns ajkdnvadva fa
-              Lorem ipsum dolor sit amet, consectetu alkns ajkdnvadva fa
-                fnaoefunt mollit anim id est laborum.</p>
+              <h1>We provide you a platform to...</h1>
+              <ul>
+                <li>Manage your daily sales.</li>
+                <li>Manage your stocks.</li>
+                <li>Get your sales reports.</li>
+              </ul>
             </div>
         </div>
 
 
-        <!-- <div class="introduction">
-          <div class="intro-text">
-            <h1>Laptop for the future</h1>
-            <p>Lorem ipsum dolor sit amet, consectetu alkns ajkdnvadva fa
-            Lorem ipsum dolor sit amet, consectetu alkns ajkdnvadva fa
-              fnaoefunt mollit anim id est laborum.</p>
-          </div>
-          <div class="call-to-action">
-            <button type="button" class="cta-select" name="button">14 Inch</button>
-            <button type="button" class="cta-add" name="button">Add To Cart</button>
-          </div>
-        </div>
-
-        <div class="cover">
-          <img src="img/laptop.png" alt="laptop">
-        </div> -->
       </section>
     </main>
 
     <img class="large-circle" src="img/circle-large.png" alt="">
     <img class="medium-circle" src="img/circle.png" alt="">
     <img class="small-circle" src="img/circle.png" alt="">
+
+    <div class="copyright">
+      <hr>
+      <p class="copyright">Copyright &copy Lakru-one. Built in corona vaccation 2020</p>
+    </div>
+
+
 
 
 <!-- scrypt -->
@@ -107,20 +100,36 @@
   var z = document.getElementById('btn');
 
   var p = document.getElementById('form-area');
+  var screen_size = window.matchMedia("(max-width: 660px)");
 
 
   function register(){
     x.style.left ="-400px";
-    y.style.left = "50px";
     z.style.left = "110px";
     p.style.height = "550px";
+
+    if (screen_size.matches) {
+      y.style.left ="30px";
+    }else {
+       y.style.left ="50px";
+    }
+
+
   }
 
   function login(){
-    x.style.left ="50px";
+
     y.style.left = "450px";
     z.style.left = "0";
     p.style.height = "400px";
+
+     if (screen_size.matches) {
+       x.style.left ="30px";
+     }else {
+        x.style.left ="50px";
+     }
+
+
   }
 </script>
 
