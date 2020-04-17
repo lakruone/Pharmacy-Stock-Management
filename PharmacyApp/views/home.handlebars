@@ -13,9 +13,11 @@
 
         <form id="login" class="input-group" >
           <input id="username" type="text" class="input-field" placeholder="Enter Username" required>
+          <div class="textbox text-center username-log">  </div>
           <input id="password" type="text" class="input-field" placeholder="Enter Password" required>
+          <div class="textbox text-center password-log">  </div>
           <input id="rememberPass" type="checkbox" class="check-box"><span>Remember Password</span>
-          <button id="log-btn" type="button" class="submit-btn" onclick="submit_login()">Login</button>
+          <button id="log-btn" type="button" class="submit-btn log" onclick="submit_login()">Login</button>
         </form>
 
         <form id="register" class="input-group">
@@ -24,10 +26,11 @@
           <input id="lastname" type="text" class="input-field" placeholder="Enter Last Name">
           <input id="email-r" type="email" class="input-field" placeholder="Enter Email*" required>
           <input id="password-r" type="text" class="input-field" placeholder="Enter Password*" required>
-          <div class="textbox text-center">  </div>
+          <div class="textbox text-cente password-reg">  </div>
           <input id="password-2" type="text" class="input-field" placeholder="Retype Password*" required>
-          <input id="phone" type="tel" class="input-field" placeholder="Telephone number*" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
-          <div class="textbox text-center">  </div>
+          <div class="textbox text-cente password2-reg">  </div>
+          <input id="phone" type="tel" class="input-field" placeholder="Telephone number*" required>
+          <div class="textbox text-center phone-reg">  </div>
           <button id="reg-btn" type="submit" class="submit-btn reg" onclick="submit_register()">Register</button>
         </form>
 
@@ -95,42 +98,103 @@
 
   ///////////////////////// submit login/////////////////////////////////////////////////////
   function submit_login(){
-    var login_btn = document.getElementById('log-btn');
-    login_btn.style.background = "linear-gradient(to right, #5DADE2,#D6EAF8)";
-    login_btn.style.border = "1px solid #1A5276";
 
+    if (check_empty_fields()>0) {
+      console.log("some fields empty");
+      return;
+    }else {
+      // console.log("continue your work");
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+      console.log(username);
+      console.log(password);
+      var data = {username : username , password :password}
+      $.post("/login", data);
+    }
+  }
+
+  function check_empty_fields(){
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
-    console.log(username);
-    console.log(password);
-    var data = {username : username , password :password}
-    $.post("/login", data);
+
+    var display_u = document.getElementsByClassName("username-log")[0];
+    var display_p = document.getElementsByClassName("password-log")[0];
+    var error_count = 0;
+
+    if (username.length==0) {
+      display_u.innerHTML = "please enter username";
+      error_count++;
+    }else  {
+      display_u.innerHTML = "";
+    }
+
+    if (password.length==0) {
+      display_p.innerHTML = "please enter password";
+      error_count++;
+    }else {
+      display_p.innerHTML = "";
+    }
+
+    return error_count;
   }
 
   ///////////////////////submit register//////////////////////////////////
   function submit_register(){
-    var reg_btn = document.getElementById('reg-btn');
-    reg_btn.style.background = "linear-gradient(to right, #5DADE2,#D6EAF8)";
-    reg_btn.style.border = "1px solid #1A5276";
+
+    if (reg_form_empty_fields()>0) {
+      console.log("some fields empty reg form");
+      return;
+    }else {
+
+      var username = document.getElementById('username-r').value;
+      var firstname = document.getElementById('firstname').value;
+      var lastname = document.getElementById('lastname').value;
+      var email = document.getElementById('email-r').value;
+      var password = document.getElementById('password-r').value;
+      var password2 = document.getElementById('password-2').value;
+      var phone = document.getElementById('phone').value;
+      console.log(password);
+
+      var data = {username : username ,
+                  firstname:firstname,
+                  lastname:lastname,
+                  email:email,
+                  password:password,
+                  password2 :password2,
+                  phone:phone}
+
+      $.post("/register", data); //last edited here
+    }
+  }
+
+  function reg_form_empty_fields() {
 
     var username = document.getElementById('username-r').value;
-    var firstname = document.getElementById('firstname').value;
-    var lastname = document.getElementById('lastname').value;
     var email = document.getElementById('email-r').value;
     var password = document.getElementById('password-r').value;
     var password2 = document.getElementById('password-2').value;
     var phone = document.getElementById('phone').value;
-    // console.log(password);
 
-    var data = {username : username ,
-                firstname:firstname,
-                lastname:lastname,
-                email:email,
-                password:password,
-                password2 :password2,
-                phone:phone}
+    var display_p2 = document.getElementsByClassName("password2-reg")[0];
+    var display_phone = document.getElementsByClassName("phone-reg")[0];
 
-    $.post("/register", data); //last edited here
+    var error_count = 0;
+
+    if (username.length==0 || password.length==0 || email.length==0 || phone.length==0  ) {
+      display_phone.innerHTML = "* marked fields are mandatory";
+      error_count++;
+    }else  {
+      display_phone.innerHTML = "";
+    }
+
+    if (password!=password2) {
+      display_p2.innerHTML = "password do not match";
+      error_count++;
+    }else {
+      display_p2.innerHTML = "";
+    }
+
+    return error_count;
   }
 
 //////////////check password////////////////////
@@ -142,19 +206,15 @@
 
   function checkpassword(password) {
     // console.log("check pass");
-    var display = document.getElementsByClassName("textbox")[0];
-
-
+    var display = document.getElementsByClassName("password-reg")[0];
     if (password.length < 6) {
       display.innerHTML = "minimum number of characters is 6";
-    } else if (password.length > 12) {
+    }else{
+      display.innerHTML = "";
+    }
+    if (password.length > 20) {
         display.innerHTML = "maximum number of characters is 20";
-      }else{
-      display.style.display= "none";
-    }//last-edit here
-
-
-
+    }
   }
 
 </script>

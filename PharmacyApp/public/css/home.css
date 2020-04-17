@@ -92,6 +92,18 @@
   margin-top: 10px;
 }
 
+.reg:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.log:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
 .check-box{
   margin: 30px 10px 30px 0;
 }
