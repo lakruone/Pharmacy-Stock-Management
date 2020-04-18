@@ -1,6 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const User = require('../models/user_query');
+const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
+
+
+
+
+////////////////////////////////////////
+var smtpTransport = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    auth: {
+        user: "lakruone@gmail.com",
+        pass: "tcoumguxdkxmmaba"
+    }
+});
+
+/////////////////////////////////////////////
 
 
 router.get('/', (req, res) => {
@@ -10,7 +28,174 @@ router.get('/', (req, res) => {
 	});
 });
 
+router.get('/activate', (req, res) => {
+	res.render('activate_account', {
+		title : 'Activate account | Register',
+		style : 'activate_account.css',
+	});
+});
 
+router.post('/activate_account', (req, res) => {
+	const username = req.body.username;
+	const firstname = req.body.firstname;
+	const lastname = req.body.lastname;
+	const email =req.body.email;
+	var password = req.body.password;
+	const phone =req.body.phone;
+	console.log(username);
+
+	userData = {
+		username:username,
+		firstname:firstname,
+		lastname:lastname,
+		email:email,
+		password:password,
+		phone:phone
+	}
+
+	//check email exists   -----tcoumguxdkxmmaba  <----app password
+	User.checkEmail(email, (err, result) =>{
+		if(err) {
+			console.log(err);
+		}
+		if(result ==true){
+			res.json({message :false});
+			console.log("email already registered");
+
+		}else {
+			res.json({message :true});
+
+			///////////////generate token//////////////
+			jwt.sign({userData},'LakruSecret',{ expiresIn: '24h' }, (err,token)=>{
+					if(err){
+						console.log(err);
+					}
+					 if(token){
+						 // console.log(token);
+						 console.log('sending email to %s',email);
+						 /////////////////////////send email////////////////////////////////////////
+						 var mailOptions = {
+								 from: 'lakruone@gmail.com',
+								 to:email,
+								 subject: 'Activate your account | lakru-creations ',
+								 //text: req.body.content,
+								 html: '<h3>Activate your lakru-creations account </h3><p>Click the following link to activate the account </p>	<p>http://localhost:5600/activate/'+token+'</p>	<p>username :'+username+'</p>	<p>password :'+password+'</p> <hr>Thank you,<p>Best Regards</p><p>lakru-creations</p>'
+
+						 };
+
+							 smtpTransport.sendMail(mailOptions, (error, info) => {
+								 if (error) {
+										 return console.log('Error while sending mail: ' + error);
+								 } else {
+										 console.log('Message sent: %s', info.messageId);
+								 }
+								 smtpTransport.close();
+							 });
+						 ///////////////////////////////////////////////////////////////
+					 }
+				 });
+
+		}
+	});
+
+});
+
+
+
+
+//Error page
+router.get('/forbidden/:error_message', (req, res) => {
+	console.log(req.params.error_message);
+	const message = req.params.error_message;
+
+	res.render('forbidden', {
+		title : 'Lakru-creations | Forbidden',
+		style : 'forbidden.css',
+		message : message
+	});
+});
+
+
+
+
+// Route for emailed links
+router.get('/activate/:token', (req, res) => {
+
+	jwt.verify(req.params.token, 'LakruSecret', (err, decodeData) =>{
+    if(err){
+			console.log(err);
+			res.redirect('/forbidden/The link is expired and no longer available. Please sign up again');
+			return;
+    }else{
+			console.log(decodeData);
+			const username = decodeData.userData.username;
+			const firstname = decodeData.userData.firstname;
+			const lastname = decodeData.userData.lastname;
+			const email = decodeData.userData.email;
+			var password = decodeData.userData.password;
+			const phone = decodeData.userData.phone;
+
+			////////////////////check email exists///////////////////////////
+			User.checkEmail(email, (err, result) =>{
+				if(err) {
+					console.log(err);
+				}
+				if(result ==true){
+					console.log("Regitered email,account already activated, go to dashboard");
+
+					res.render('dashboard', {
+						title : 'lakru-creations | Dashboard',
+						style : 'dashboard.css',
+						username : username,
+						email:email
+					});
+					return;
+
+				}else {
+					///////////////////////save user///////////////////////////////
+					bcrypt.genSalt(10,(err,salt) =>{
+						bcrypt.hash(password,salt, (err,hash) =>{
+							if(err) throw err;
+						 password = hash;
+
+						 //save data in to the database
+						 User.saveUser(username,firstname,lastname,email,password,phone, (err, result)=>{
+							 if(err){
+								 console.log(err);
+							 }
+							 else{
+									console.log("user registered succesfully");
+
+									res.render('dashboard', {
+										title : 'lakru-creations | Dashboard',
+										style : 'dashboard.css',
+										username : username,
+										email:email
+									});
+									return;
+							 }
+						 });
+
+						});
+					});
+					/////////////////////////////////////////////////////
+				}
+			});
+		///////////////////////////////////////////////
+
+		}
+	});
+});
+
+//dashboard
+// router.get('/dashboard', (req, res) => {
+// console.log(req.body);
+// 	res.render('dashboard', {
+// 		title : 'Lakru-creations | Dashboard',
+// 		style : 'dashboard.css',
+// 		username : "User name here"
+// 	});
+// });
 
 //user login
 router.post("/login", (req,res) => {
@@ -25,20 +210,25 @@ router.post("/login", (req,res) => {
 
    if(userData ==null){
 		 console.log("No user found");
-		 return;
-     // return res.status(404).json({ data : "No user found"});
+     return res.json({ data : "no_user"});
 
    }
    if(userData.data){
 		 console.log("password do not match");
-		 return;
-    // return res.status(400).json({data :"password did not match"});
+		 return res.json({ data : "false_pass"});;
    }
 
    else{
-		 console.log("success");
-		 return;
-       //console.log(userData.userType);
+		 console.log(userData);
+		 return res.json({ data : "success", userData});; //last_edit here
+
+		 // res.render('dashboard', {
+			//  title : 'lakru-creations | Dashboard',
+			//  style : 'dashboard.css',
+			//  username : userData.username,
+			//  email:userData.email
+		 // });
+		 // return;
 
     	}
  });
@@ -52,24 +242,17 @@ router.post("/register", (req,res) => {
     const lastname = req.body.lastname;
     const email =req.body.email;
     var password = req.body.password;
-    const password2 = req.body.password2;
     const phone =req.body.phone;
-
-    if(password.length < 8){
-      console.log("password do not match");
-      return res.status(402).json({message:"password must more than 8 charactors"});
-    }
-    if(password != confirmPassword){
-      console.log("password do not match");
-      return res.status(400).json({message:"password do not match"});
-    }
-    else{
+		console.log("register");
+		return res.json({data:"message recieved"})
       User.checkEmail(email, (err, result) =>{
         if(err) {
           console.log(err);
         }
         if(result ==true){
-          res.status(403).json({message :"Email already registered"});
+          // res.status(403).json({message :"Email already registered"});
+					console.log("email already registered");
+					return;
         }else{
             bcrypt.genSalt(10,(err,salt) =>{
               bcrypt.hash(password,salt, (err,hash) =>{
@@ -77,20 +260,23 @@ router.post("/register", (req,res) => {
                password = hash;
 
                //save data in to the database
-               User.saveUser(firstName,lastName,email,password,address,mobileNo, (err, result)=>{
+               User.saveUser(username,firstname,lastname,email,password,phone, (err, result)=>{
                  if(err){
                    console.log(err);
                  }
                  else{
-                    res.status(200).json({message :"user registered successfully"});
+                    // res.status(200).json({message :"user registered successfully"});
+										console.log("user registered succesfully");
+										return;
                  }
                });
+
               });
             });
 
           }
       });
-    }
+
   });
 
 

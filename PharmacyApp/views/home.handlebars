@@ -8,7 +8,7 @@
         <div class="button-box">
           <div id="btn"></div>
           <button type="button" name="button" class="toggle-btn" onclick="login()">Login</button>
-          <button type="button" name="button" class="toggle-btn" onclick="register( )">Register</button>
+          <button type="button" name="button" class="toggle-btn" onclick="register()">Register</button>
         </div>
 
         <form id="login" class="input-group" >
@@ -25,13 +25,16 @@
           <input id="firstname" type="text" class="input-field" placeholder="Enter First Name">
           <input id="lastname" type="text" class="input-field" placeholder="Enter Last Name">
           <input id="email-r" type="email" class="input-field" placeholder="Enter Email*" required>
+          <div class="textbox text-cente email-reg">  </div>
           <input id="password-r" type="text" class="input-field" placeholder="Enter Password*" required>
           <div class="textbox text-cente password-reg">  </div>
           <input id="password-2" type="text" class="input-field" placeholder="Retype Password*" required>
           <div class="textbox text-cente password2-reg">  </div>
           <input id="phone" type="tel" class="input-field" placeholder="Telephone number*" required>
           <div class="textbox text-center phone-reg">  </div>
-          <button id="reg-btn" type="submit" class="submit-btn reg" onclick="submit_register()">Register</button>
+          <button id="reg-btn" type="button" class="submit-btn reg" onclick="submit_register()">Register</button>
+          <!-- <button id="reg-btn" type="submit" class="submit-btn reg" >Register</button> -->
+
         </form>
 
     </div>
@@ -109,7 +112,19 @@
       console.log(username);
       console.log(password);
       var data = {username : username , password :password}
-      $.post("/login", data);
+      $.post("/login", data, function(result){
+        console.log(result);
+        if (result.data=="no_user") {
+          window.alert("No user found");
+        }else  if (result.data=="false_pass") {
+          window.alert("Incorrect Password");
+        }else {
+          var details = result.userData; // last_edit here
+
+          $.get("/dashboard", details);
+        }
+
+      });
     }
   }
 
@@ -139,6 +154,7 @@
   }
 
   ///////////////////////submit register//////////////////////////////////
+
   function submit_register(){
 
     if (reg_form_empty_fields()>0) {
@@ -151,7 +167,6 @@
       var lastname = document.getElementById('lastname').value;
       var email = document.getElementById('email-r').value;
       var password = document.getElementById('password-r').value;
-      var password2 = document.getElementById('password-2').value;
       var phone = document.getElementById('phone').value;
       console.log(password);
 
@@ -160,11 +175,29 @@
                   lastname:lastname,
                   email:email,
                   password:password,
-                  password2 :password2,
                   phone:phone}
 
-      $.post("/register", data); //last edited here
+      // var data = {username : "lakruwan" ,
+      //             firstname:"firstname",
+      //             lastname:"lastname",
+      //             email:"lakruwan.16@itfac.mrt.ac.lk",
+      //             password:"password",
+      //             phone:"phone"}
+
+      $.post("/activate_account", data, function(result) {
+        console.log(result);
+        if (result.message==true) {
+          window.location.href="/activate";
+        }else {
+          window.alert("Email already registered");
+        }
+
+      });
+
     }
+
+
+
   }
 
   function reg_form_empty_fields() {
@@ -215,6 +248,7 @@
     if (password.length > 20) {
         display.innerHTML = "maximum number of characters is 20";
     }
+
   }
 
 </script>

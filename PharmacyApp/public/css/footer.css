@@ -1,14 +1,21 @@
 .copyright{
   margin-top: 10px;
-  /* background-color: #273746;#3498DB */
+  width: 100%;
   background-color: #3498DB;
   padding: 5px;
-  color: white;
   text-align: center;
   margin-bottom: 5px;
   align-items: center;
+
 }
 
+.copyright p,hr{
+  color: white;
+}
+
+.copyright p{
+  padding-top: 5px;
+}
 @media  screen and (max-width:660px) {
   .copyright{
     padding: 0;

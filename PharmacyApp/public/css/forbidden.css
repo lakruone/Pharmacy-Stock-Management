@@ -1,0 +1,63 @@
+.forbidden{
+  padding: 10%;
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.forbidden p{
+  font-size: 200px;
+  font-weight: 600;
+  color: red;
+  text-align: center;
+}
+.forbidden h2{
+  text-align: center;
+}
+
+.large-circle{
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  opacity: 0.5;
+  height: 95%;
+}
+
+.medium-circle{
+  position: absolute;
+  top: 35%;
+  right: 35%;
+  z-index: -1;
+  height: 60%;
+  opacity: 0.4;
+}
+
+.small-circle{
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  z-index: -1;
+  height: 40%;
+  opacity: 0.3;
+}
+
+
+@media  screen and (max-width:1024px) {
+  .forbidden p{
+    font-size: 100px;
+  }
+
+
+}
+
+@media  screen and (max-width:660px) {
+  .forbidden p{
+    font-size: 80px;
+  }
+  .forbidden h2{
+  font-size: 20px;
+  }
+}

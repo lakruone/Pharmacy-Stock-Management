@@ -1,41 +1,41 @@
 const pool = require('../config/database');
-// const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 
 //checkEmail - Email alredy registered or not ---rout(user/register)
-// module.exports.checkEmail =(email, callback) =>{
-//   const qry = "select user_id from user where email=?";
-//
-//   pool.query(qry,[email], (err,result) => {
-//     if (err){
-//       return callback(err,null);
-//     }
-//     if(result[0]==null){
-//           return  callback(null,false);    //email not registered
-//         }else{
-//           return callback(null,true);  //email already regisred
-//         }
-//       });
-// }
-//
-// //save the user ---(user/register)
-// module.exports.saveUser =(firstName,lastName,email,password,address,mobileNo, callback) =>{
-//   const qry = "insert into user (firstName,lastName,email,password,address,mobileNo) values (?,?,?,?,?,?)";
-//
-//   pool.query(qry,[firstName,lastName,email,password,address,mobileNo], (err,result) => {
-//     if (err){
-//       return callback(err,null);
-//     }else{
-//       return callback(null,true);
-//     }
-//   });
-//
-// }
+module.exports.checkEmail =(email, callback) =>{
+  const qry = "select user_id from user where email=?";
+
+  pool.query(qry,[email], (err,result) => {
+    if (err){
+      return callback(err,null);
+    }
+    if(result[0]==null){
+          return  callback(null,false);    //email not registered
+        }else{
+          return callback(null,true);  //email already registered
+        }
+      });
+}
+
+//save the user ---(user/register)
+module.exports.saveUser =(username,firstname,lastname,email,password,phone, callback) =>{
+  const qry = "insert into user (username,firstname,lastname,email,password,phone) values (?,?,?,?,?,?)";
+
+  pool.query(qry,[username,firstname,lastname,email,password,phone], (err,result) => {
+    if (err){
+      return callback(err,null);
+    }else{
+      return callback(null,true);
+    }
+  });
+
+}
 
 //find user type and send relavant data-- (user/login)
 module.exports.findUser = (username,password,callback) => {
 
-  const qry1 = "select user_id,username,firstname,lastname,email,password from user where username=?";
+  const qry1 = "select user_id,username,firstname,lastname,email,password,phone from user where username=?";
       // console.log("here");
       pool.query(qry1,[username],(err,result2) =>{
         if(err) {
@@ -46,29 +46,22 @@ module.exports.findUser = (username,password,callback) => {
 
           return callback(null,null); //no user found
         }else{
-          var encPass=result2[0].password;
-          if (encPass==password) {
-            return callback(null,result2[0]);  //send user data, password matched
-          }else {
-            return callback(null,{"data":"password do not macth"});
-          }
 
           //check password
-          // var encPass=result2[0].password;
-          // bcrypt.compare(password, encPass, function(err, res) {
-          //   if(err){
-          //     return callback(err,null);
-          //   }
-          //   if(res==true){
-          //     //password mtached
-          //     result2[0].userType=2;
-          //     return callback(null,result2[0]);  //user
-          //   }
-          //   if(res==false){
-          //     //password do not match
-          //     return callback(null,{"data":"password do not macth"});
-          //   }
-          // });
+          var encPass=result2[0].password;
+          bcrypt.compare(password, encPass, function(err, res) {
+            if(err){
+              return callback(err,null);
+            }
+            if(res==true){
+              //password mtached
+              return callback(null,result2[0]);
+            }
+            if(res==false){
+              //password do not match
+              return callback(null,{"data":"password do not macth"});
+            }
+          });
 
         }
       });
