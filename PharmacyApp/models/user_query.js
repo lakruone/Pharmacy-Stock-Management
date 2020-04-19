@@ -84,6 +84,33 @@ module.exports.findUser = (username,password,callback) => {
         }
       });
 }
+
+
+////////find user by id
+module.exports.findUserById = (user_id,callback) => {
+
+  const qry1 = "select user_id,username,firstname,lastname,email,password,phone from user where user_id=?";
+      // console.log("here");
+      pool.query(qry1,[user_id],(err,result2) =>{
+        if(err) {
+          return callback(err,null);
+
+        }
+        if(result2[0]==null){
+
+          return callback(null,null); //no user found
+        }else{
+
+          return callback(null,result2[0]);  //usr data
+          
+        }
+      });
+}
+
+
+
+
+
 //
 // module.exports.getCatagories =(callback) =>{
 //   const qry = "select catagoryID,catagoryName from catagory ";

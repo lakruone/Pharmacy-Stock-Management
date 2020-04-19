@@ -4,6 +4,11 @@ const User = require('../models/user_query');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
+
+const {ensureAuthenticated} = require('../config/auth');
+
+
 
 
 
@@ -136,7 +141,7 @@ router.get('/forbidden/:error_message', (req, res) => {
 
 
 // Route for emailed links
-router.get('/activate/:token', (req, res) => {
+router.get('/activate/:token', (req, res,next) => {
 
 	jwt.verify(req.params.token, 'LakruSecret', (err, decodeData) =>{
     if(err){
@@ -144,13 +149,16 @@ router.get('/activate/:token', (req, res) => {
 			res.redirect('/forbidden/The link is expired and no longer available. Please sign up again');
 			return;
     }else{
-			console.log(decodeData);
+			// console.log(decodeData);
 			const username = decodeData.userData.username;
 			const firstname = decodeData.userData.firstname;
 			const lastname = decodeData.userData.lastname;
 			const email = decodeData.userData.email;
 			var password = decodeData.userData.password;
 			const phone = decodeData.userData.phone;
+
+      req.body.username = username;
+      req.body.password = password;
 
 			////////////////////check email exists///////////////////////////
 			User.checkEmail(email, (err, result) =>{
@@ -160,13 +168,12 @@ router.get('/activate/:token', (req, res) => {
 				if(result ==true){
 					console.log("Regitered email,account already activated, go to dashboard");
 
-					res.render('dashboard', {
-						title : 'lakru-creations | Dashboard',
-						style : 'dashboard.css',
-						username : username,
-						email:email
-					});
-					return;
+          passport.authenticate('local', {
+            successRedirect:'/dashboard'
+            // failureRedirect: '/users/login',
+            // failureFlash: true
+           })(req, res, next);
+          ////////////////////////////////
 
 				}else {
 					///////////////////////save user///////////////////////////////
@@ -183,13 +190,13 @@ router.get('/activate/:token', (req, res) => {
 							 else{
 									console.log("user registered succesfully");
 
-									res.render('dashboard', {
-										title : 'lakru-creations | Dashboard',
-										style : 'dashboard.css',
-										username : username,
-										email:email
-									});
-									return;
+                  ////////////////////////////////////
+                  passport.authenticate('local', {
+                    successRedirect:'/dashboard'
+                    // failureRedirect: '/users/login',
+                    // failureFlash: true
+                   })(req, res, next);
+                   /////////////////////////////////////
 							 }
 						 });
 
@@ -205,23 +212,26 @@ router.get('/activate/:token', (req, res) => {
 });
 
 //dashboard
-router.get('/dashboard/:id', (req, res) => {
-console.log(req.params.id);
-const id= req.params.id;
-//write a function to get user details by id and pass it to the dashboard
+router.get('/dashboard', ensureAuthenticated, (req, res) => {
+console.log("dashboard");
+// console.log(req.user);
+const username = req.user.username;
 
 	res.render('dashboard', {
 		title : 'Lakru-creations | Dashboard',
 		style : 'dashboard.css',
-		username : id
+		username : username
 	});
 });
 
+
+
+
 //user login
-router.post("/login", (req,res) => {
+router.post("/login", (req,res,next) => {
   const username = req.body.username;
   const password = req.body.password;
-  console.log(username);
+  // console.log(username);
 
  User.findUser(username,password, (err,userData) =>{
    if(err){
@@ -230,23 +240,51 @@ router.post("/login", (req,res) => {
 
    if(userData ==null){
 		 console.log("No user found");
-     return res.json({ data : "no_user"});
+     // return res.json({ data : "no_user"});
+     return res.render('home', {
+       title : 'Lakru-creations | Home',
+   		 style : 'home.css',
+       username: username,
+       password: password,
+       error1:"Invalid username"
+     });
 
    }
    if(userData.data){
 		 console.log("password do not match");
-		 return res.json({ data : "false_pass"});;
+		 // return res.json({ data : "false_pass"});;
+     return res.render('home', {
+       title : 'Lakru-creations | Home',
+        style : 'home.css',
+       username: username,
+       password: password,
+       error2:"Incorect password"
+     });
    }
 
    else{
-		 console.log(userData.user_id);
-		 return res.json({ data : "success", id:userData.user_id});
+		 // console.log(userData);
+
+     passport.authenticate('local', {
+       successRedirect:'/dashboard'
+       // failureRedirect: '/users/login',
+       // failureFlash: true
+      })(req, res, next);
 
     	}
  });
 });
 
 
+// Logout User
+router.get('/logout', (req, res) => {
+  console.log(req.user);
+  console.log("before logout");
+  req.logout();
+  console.log(req.user);
+  // req.flash('success_msg', 'You are logged out');
+  res.redirect('/');
+});
 
 //user registration
 // router.get('/register', (req, res) => {

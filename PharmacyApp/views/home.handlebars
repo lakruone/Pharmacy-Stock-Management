@@ -11,13 +11,17 @@
           <button type="button" name="button" class="toggle-btn" onclick="register()">Register</button>
         </div>
 
-        <form id="login" class="input-group" >
-          <input id="username" type="text" class="input-field" placeholder="Enter Username" required>
-          <div class="textbox text-center username-log">  </div>
-          <input id="password" type="text" class="input-field" placeholder="Enter Password" required>
+
+        <form id="login" action="/login" method="POST" class="input-group" >
+          <div class="textbox text-center">{{error1}} </div>
+          <input id="username" type="text" class="input-field" placeholder="Enter Username" name="username" value="{{username}}" required>
+          <div class="textbox text-center">{{error2}} </div>
+          <input id="password" type="text" class="input-field" placeholder="Enter Password" name="password" value="{{password}}" required>
           <div class="textbox text-center password-log">  </div>
           <input id="rememberPass" type="checkbox" class="check-box"><span>Remember Password</span>
-          <button id="log-btn" type="button" class="submit-btn log" onclick="submit_login()">Login</button>
+          <!-- <button id="log-btn" type="button" class="submit-btn log" onclick="submit_login()">Login</button> -->
+          <button id="log-btn" type="submit" class="submit-btn log">Login</button>
+
         </form>
 
         <form id="register" class="input-group">
@@ -112,20 +116,23 @@
       console.log(username);
       console.log(password);
       var data = {username : username , password :password}
-      $.post("/login", data, function(result){
-        console.log(result);
-        if (result.data=="no_user") {
-          window.alert("No user found");
-        }else  if (result.data=="false_pass") {
-          window.alert("Incorrect Password");
-        }else {
-          var id = result.id; // last_edit here
-          console.log(id);
-          // $.redirectPost("/dashboard", {x: 'example', y: 'abc'});
-          window.location.replace("/dashboard/"+id);
-        }
 
-      });
+      $.post("/login", data).done();
+
+      // $.post("/login", data, function(result){
+      //   console.log(result);
+      //   if (result.data=="no_user") {
+      //     window.alert("No user found");
+      //   }else  if (result.data=="false_pass") {
+      //     window.alert("Incorrect Password");
+      //   }else {
+      //     var id = result.id;
+      //     console.log(id);
+      //     window.location.replace("/dashboard/"+id);
+      //   }
+      //
+      // });
+
     }
   }
 
@@ -153,6 +160,7 @@
 
     return error_count;
   }
+
 
   ///////////////////////submit register//////////////////////////////////
 
