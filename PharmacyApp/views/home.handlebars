@@ -119,9 +119,10 @@
         }else  if (result.data=="false_pass") {
           window.alert("Incorrect Password");
         }else {
-          var details = result.userData; // last_edit here
-
-          $.get("/dashboard", details);
+          var id = result.id; // last_edit here
+          console.log(id);
+          // $.redirectPost("/dashboard", {x: 'example', y: 'abc'});
+          window.location.replace("/dashboard/"+id);
         }
 
       });
@@ -186,16 +187,18 @@
 
       $.post("/activate_account", data, function(result) {
         console.log(result);
-        if (result.message==true) {
+        if (result.message==0) {
           window.location.href="/activate";
-        }else {
+        }else if(result.message==1){
           window.alert("Email already registered");
+        }else {
+          window.alert("Username already exists");
+
         }
 
       });
 
     }
-
 
 
   }

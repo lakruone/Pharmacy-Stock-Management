@@ -59,41 +59,58 @@ router.post('/activate_account', (req, res) => {
 			console.log(err);
 		}
 		if(result ==true){
-			res.json({message :false});
-			console.log("email already registered");
+      console.log("email already registered");
+
+			return res.json({message :1});
 
 		}else {
-			res.json({message :true});
 
-			///////////////generate token//////////////
-			jwt.sign({userData},'LakruSecret',{ expiresIn: '24h' }, (err,token)=>{
-					if(err){
-						console.log(err);
-					}
-					 if(token){
-						 // console.log(token);
-						 console.log('sending email to %s',email);
-						 /////////////////////////send email////////////////////////////////////////
-						 var mailOptions = {
-								 from: 'lakruone@gmail.com',
-								 to:email,
-								 subject: 'Activate your account | lakru-creations ',
-								 //text: req.body.content,
-								 html: '<h3>Activate your lakru-creations account </h3><p>Click the following link to activate the account </p>	<p>http://localhost:5600/activate/'+token+'</p>	<p>username :'+username+'</p>	<p>password :'+password+'</p> <hr>Thank you,<p>Best Regards</p><p>lakru-creations</p>'
+      ////////////check username exists//////////////////////////
+      User.checkUsername(username, (err1, result1) =>{
+        if(err) {
+          console.log(err1);
+        }
+        if(result1 ==true){
+          console.log("username already exists");
 
-						 };
+          return res.json({message :2});
 
-							 smtpTransport.sendMail(mailOptions, (error, info) => {
-								 if (error) {
-										 return console.log('Error while sending mail: ' + error);
-								 } else {
-										 console.log('Message sent: %s', info.messageId);
-								 }
-								 smtpTransport.close();
-							 });
-						 ///////////////////////////////////////////////////////////////
-					 }
-				 });
+        }else {
+          res.json({message :0});
+
+          ///////////////generate token//////////////
+          jwt.sign({userData},'LakruSecret',{ expiresIn: '24h' }, (err,token)=>{
+              if(err){
+                console.log(err);
+              }
+               if(token){
+                 // console.log(token);
+                 console.log('sending email to %s',email);
+                 /////////////////////////send email////////////////////////////////////////
+                 var mailOptions = {
+                     from: 'lakruone@gmail.com',
+                     to:email,
+                     subject: 'Activate your account | lakru-creations ',
+                     //text: req.body.content,
+                     html: '<h3>Activate your lakru-creations account </h3><p>Click the following link to activate the account </p>	<p>http://localhost:5600/activate/'+token+'</p>	<p>username :'+username+'</p>	<p>password :'+password+'</p> <hr>Thank you,<p>Best Regards</p><p>lakru-creations</p>'
+
+                 };
+
+                   smtpTransport.sendMail(mailOptions, (error, info) => {
+                     if (error) {
+                         return console.log('Error while sending mail: ' + error);
+                     } else {
+                         console.log('Message sent: %s', info.messageId);
+                     }
+                     smtpTransport.close();
+                   });
+               }
+             });
+
+        }
+
+      });
+
 
 		}
 	});
@@ -188,14 +205,17 @@ router.get('/activate/:token', (req, res) => {
 });
 
 //dashboard
-// router.get('/dashboard', (req, res) => {
-// console.log(req.body);
-// 	res.render('dashboard', {
-// 		title : 'Lakru-creations | Dashboard',
-// 		style : 'dashboard.css',
-// 		username : "User name here"
-// 	});
-// });
+router.get('/dashboard/:id', (req, res) => {
+console.log(req.params.id);
+const id= req.params.id;
+//write a function to get user details by id and pass it to the dashboard
+
+	res.render('dashboard', {
+		title : 'Lakru-creations | Dashboard',
+		style : 'dashboard.css',
+		username : id
+	});
+});
 
 //user login
 router.post("/login", (req,res) => {
@@ -219,65 +239,13 @@ router.post("/login", (req,res) => {
    }
 
    else{
-		 console.log(userData);
-		 return res.json({ data : "success", userData});; //last_edit here
-
-		 // res.render('dashboard', {
-			//  title : 'lakru-creations | Dashboard',
-			//  style : 'dashboard.css',
-			//  username : userData.username,
-			//  email:userData.email
-		 // });
-		 // return;
+		 console.log(userData.user_id);
+		 return res.json({ data : "success", id:userData.user_id});
 
     	}
  });
 });
 
-
-//registering the user ----(user/register)
-router.post("/register", (req,res) => {
-		const username = req.body.username;
-    const firstname = req.body.firstname;
-    const lastname = req.body.lastname;
-    const email =req.body.email;
-    var password = req.body.password;
-    const phone =req.body.phone;
-		console.log("register");
-		return res.json({data:"message recieved"})
-      User.checkEmail(email, (err, result) =>{
-        if(err) {
-          console.log(err);
-        }
-        if(result ==true){
-          // res.status(403).json({message :"Email already registered"});
-					console.log("email already registered");
-					return;
-        }else{
-            bcrypt.genSalt(10,(err,salt) =>{
-              bcrypt.hash(password,salt, (err,hash) =>{
-                if(err) throw err;
-               password = hash;
-
-               //save data in to the database
-               User.saveUser(username,firstname,lastname,email,password,phone, (err, result)=>{
-                 if(err){
-                   console.log(err);
-                 }
-                 else{
-                    // res.status(200).json({message :"user registered successfully"});
-										console.log("user registered succesfully");
-										return;
-                 }
-               });
-
-              });
-            });
-
-          }
-      });
-
-  });
 
 
 //user registration

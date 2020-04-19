@@ -18,6 +18,24 @@ module.exports.checkEmail =(email, callback) =>{
       });
 }
 
+/////////////////checkUsername/////////////////////
+module.exports.checkUsername =(username, callback) =>{
+  const qry = "select user_id from user where username=?";
+
+  pool.query(qry,[username], (err,result) => {
+    if (err){
+      return callback(err,null);
+    }
+    if(result[0]==null){
+          return  callback(null,false);    //username not in database
+        }else{
+          return callback(null,true);  //username already registered
+        }
+      });
+}
+
+
+
 //save the user ---(user/register)
 module.exports.saveUser =(username,firstname,lastname,email,password,phone, callback) =>{
   const qry = "insert into user (username,firstname,lastname,email,password,phone) values (?,?,?,?,?,?)";
