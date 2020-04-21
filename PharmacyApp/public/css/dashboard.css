@@ -1,0 +1,108 @@
+.dash-head{
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  color: #5546FB;
+  text-align: center;
+  text-shadow: 2px 2px #46DCFB;
+}
+
+.dashboard{
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.dashboard button{
+  text-transform: uppercase;
+  color: white;
+  font-size: 20px;
+  width: 50%;
+  margin: 10px;
+  box-shadow: none;
+  outline: none;
+  padding: 15px 25px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: 0.5s;
+  background-image: linear-gradient(to bottom, #46DCFB, #5546FB);
+  /* border: 4px solid #F4D03F; */
+}
+
+.dashboard button:active {
+  background-color: #46DCFB;
+  box-shadow: 0 5px #5546FB;
+  transform: translateY(4px);
+}
+
+.dashboard button:hover {
+  width: 52%;
+  transition: 0.5s;
+  transform: translateY(-7px);
+}
+
+.dashboard a{
+  text-decoration: none;
+}
+
+.tablet-img{
+  position: absolute;
+  top: 20%;
+  left: 0;
+  z-index: -1;
+  opacity: 0.5;
+  height: 60%;
+}
+
+.computer-img{
+  position: absolute;
+  top: 10%;
+  right: 0;
+  z-index: -1;
+  opacity: 0.5;
+  height: 60%;
+}
+
+
+
+
+/* @media  screen and (max-width:1024px) {
+
+
+
+} */
+
+
+@media  screen and (max-width:660px) {
+  .dash-head{
+    font-size: 20px;
+  }
+
+  .dashboard button{
+    font-size: 12px;
+    width: 75%;
+    padding: 10px 25px;
+  }
+
+  .dashboard button:hover {
+    width: 77%;
+  }
+
+  .tablet-img{
+     top: 10%;
+     left:10%;
+    height:35vh ;
+  }
+
+  .computer-img{
+    top: 40%;
+    right:10%;
+    height: 35vh;
+  }
+
+}

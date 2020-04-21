@@ -215,12 +215,10 @@ router.get('/activate/:token', (req, res,next) => {
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
 console.log("dashboard");
 // console.log(req.user);
-const username = req.user.username;
 
 	res.render('dashboard', {
 		title : 'Lakru-creations | Dashboard',
 		style : 'dashboard.css',
-		username : username
 	});
 });
 
