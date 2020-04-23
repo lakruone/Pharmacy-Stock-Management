@@ -9,6 +9,8 @@ const passport = require('passport');
 const app = express();
 
 const User = require('./routes/User');
+const Functions = require('./routes/Functions');
+
 
 
 
@@ -54,6 +56,8 @@ app.use(function(req,res,next) {
 
 //routes
 app.use("/",User);
+app.use("/",Functions);
+
 
 
 

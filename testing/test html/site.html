@@ -32,58 +32,42 @@
 
     </header>
 
-    <main>
-      <section class="presentation">
-        <div class="form-adj">
 
-        <div id="form-area" class="form-area">
+      <section class="add_product">
 
-            <div class="button-box">
-              <div id="btn"></div>
-              <button type="button" name="button" class="toggle-btn" onclick="login()">Login</button>
-              <button type="button" name="button" class="toggle-btn" onclick="register( )">Register</button>
-            </div>
+        <form class="" action="/add_new" method="post" enctype="multipart/form-data">
 
-            <form id="login" class="input-group">
-              <input type="text" class="input-field" placeholder="Enter Username" required>
-              <input type="text" class="input-field" placeholder="Enter Password" required>
-              <input type="checkbox" class="check-box"><span>Remember Password</span>
-              <button type="button" class="submit-btn">Login</button>
-            </form>
+          <input type="text" name="product_name"  placeholder="product name">
 
-            <form id="register" class="input-group">
-              <input type="text" class="input-field" placeholder="Enter Username*" required>
-              <input type="text" class="input-field" placeholder="Enter First Name">
-              <input type="text" class="input-field" placeholder="Enter Last Name">
-              <input type="text" class="input-field" placeholder="Enter First Name">
-              <input type="email" class="input-field" placeholder="Enter Email*" required>
-              <input type="text" class="input-field" placeholder="Enter Password*" required>
-              <input type="text" class="input-field" placeholder="Retype Password*" required>
-              <!-- <input type="checkbox" class="check-box"><span>Remember Password</span> -->
-              <button type="button" class="submit-btn reg">Register</button>
-            </form>
+          <div class="image-preview" id="image-preview">
+            <img src="" alt="Image Preview" class="ip-image">
+            <span class="ip-default-text">Image Preview</span>
+          </div>
 
-        </div>
+        <div id="dropFileForm" >
+          <input type="file" name="file" id="fileInput" onchange="addFiles(event)">
+          <label for="fileInput" id="fileLabel"
+          ondragover="overrideDefault(event);fileHover();"
+          ondragenter="overrideDefault(event); fileHover();"
+          ondragleave="overrideDefault(event); fileHoverEnd();"
+          ondrop="overrideDefault(event); fileHoverEnd(); addFiles(event)">
+            <i class="fa fa-download fa-5x"></i>
+            <br>
+            <span id="fileLabelText">
+              click to choose a file or drag it here
+            </span>
+          </label>
         </div>
 
-        <div class="description">
-            <div class="intro-text">
-              <h1>We provide you a platform to...</h1>
-              <ul>
-                <li>Manage your daily sales.</li>
-                <li>Manage your stocks.</li>
-                <li>Get your sales reports.</li>
-              </ul>
-            </div>
-        </div>
 
+        <button type="submit" name="button" class="save-btn"> save product</button>
+
+      </form>
 
       </section>
-    </main>
 
-    <img class="large-circle" src="img/circle-large.png" alt="">
-    <img class="medium-circle" src="img/circle.png" alt="">
-    <img class="small-circle" src="img/circle.png" alt="">
+
+
 
     <div class="copyright">
       <hr>
@@ -94,43 +78,115 @@
 
 
 <!-- scrypt -->
-<script type="text/javascript">
-  var x = document.getElementById('login');
-  var y = document.getElementById('register');
-  var z = document.getElementById('btn');
-
-  var p = document.getElementById('form-area');
-  var screen_size = window.matchMedia("(max-width: 660px)");
+<script>
 
 
-  function register(){
-    x.style.left ="-400px";
-    z.style.left = "110px";
-    p.style.height = "550px";
+///////////////////////////drop files/////////////////////////////////////
+var dropFileForm = document.getElementById('dropFileForm');
+var fileLabelText = document.getElementById('fileLabelText');
 
-    if (screen_size.matches) {
-      y.style.left ="30px";
+const previewContainer = document.getElementById('image-preview');
+const previewImage = previewContainer.querySelector('.ip-image');
+const previewDefaultText = previewContainer.querySelector('.ip-default-text');
+
+var droppedFiles;
+
+function overrideDefault(event){
+  // console.log("Hi there");
+  event.preventDefault();
+  event.stopPropagation();
+}
+
+function fileHover(){
+  dropFileForm.classList.add("fileHover");
+}
+
+function fileHoverEnd(){
+  dropFileForm.classList.remove("fileHover");
+}
+
+function addFiles(event){
+  droppedFiles = event.target.files || event.dataTransfer.files;
+  showFiles(droppedFiles);
+}
+
+function showFiles(files){
+  if(files.length>0){
+
+    if (files.length>1) {
+      // console.log(files);
+      // fileLabelText.innerText = files.length + 'files selected';
+      fileLabelText.innerText = 'Please select only one image';
+      files =null;
+      // console.log(files);
+      previewDefaultText.style.display = null;
+      previewImage.style.display = null;
+      previewImage.setAttribute("src", '');
+
+
     }else {
-       y.style.left ="50px";
+      console.log(files);
+      fileLabelText.innerText = files[0].name;
+      const file = files[0];
+      /////////////////////////////////
+      const reader = new FileReader();
+      previewDefaultText.style.display = "none";
+      previewImage.style.display ="block";
+
+      reader.addEventListener("load", function(){
+        // console.log(this);
+        previewImage.setAttribute("src",this.result);
+      });
+      reader.readAsDataURL(file);
+
+      /////////////////////////////
     }
 
+  }else{
+    previewDefaultText.style.display = null;
+    previewImage.style.display = null;
+    previewImage.setAttribute("src", '');
 
-  }
+    fileLabelText.innerText = 'click to choose a file or drag it here';
 
-  function login(){
-
-    y.style.left = "450px";
-    z.style.left = "0";
-    p.style.height = "400px";
-
-     if (screen_size.matches) {
-       x.style.left ="30px";
-     }else {
-        x.style.left ="50px";
-     }
+ }
+}
 
 
-  }
+
+//////////////////////////choose files///////////////////////////////////////
+
+// const imgFile = document.getElementById('imgFile');
+// const previewContainer = document.getElementById('image-preview');
+// const previewImage = previewContainer.querySelector('.ip-image');
+// const previewDefaultText = previewContainer.querySelector('.ip-default-text');
+//
+//
+// imgFile.addEventListener("change", function(){
+//   const file = this.files[0];
+//   // console.log(file);
+//
+//   if (file) {
+//     const reader = new FileReader();
+//     previewDefaultText.style.display = "none";
+//     previewImage.style.display ="block";
+//
+//     reader.addEventListener("load", function(){
+//       // console.log(this);
+//       previewImage.setAttribute("src",this.result);
+//     });
+//     reader.readAsDataURL(file);
+//   }else{
+//     // console.log("inside else");
+//     previewDefaultText.style.display = null;
+//     previewImage.style.display = null;
+//     previewImage.setAttribute("src", '');
+//   }
+//
+//
+// });
+
+
 </script>
 
   </body>

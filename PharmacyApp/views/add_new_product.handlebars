@@ -1,0 +1,176 @@
+<section class="add_product">
+
+<div class="add-product-form">
+
+  <h1>Add New Product</h1>
+
+  <form id="form_id" action="/add_new" method="post" enctype="multipart/form-data">
+
+    <div class="label-area">
+
+      <div class="p-name">
+        <label  class="label" for="productName">Product Name*</label>
+        <input type="text" name="product_name" id="productName" required>
+      </div>
+
+      <div class="quantity">
+        <label class="label" for="quantity">Quantity</label>
+        <input type="number" name="quantity" id="quantity" >
+      </div>
+
+      <div class="price">
+        <label class="label" for="price">Price (LKR.)</label>
+        <input type="number" name="price" id="price" >
+      </div>
+
+    </div>
+
+    <h3>Add product image</h3>
+    <div class="image-zone">
+    <div class="image-preview" id="image-preview">
+      <img src="" alt="Image Preview" class="ip-image">
+      <span class="ip-default-text">Image Preview</span>
+    </div>
+
+    <div id="dropFileForm" >
+      <input type="file" name="imgFile" id="fileInput" onchange="addFiles(event)">
+      <label for="fileInput" id="fileLabel"
+      ondragover="overrideDefault(event);fileHover();"
+      ondragenter="overrideDefault(event); fileHover();"
+      ondragleave="overrideDefault(event); fileHoverEnd();"
+      ondrop="overrideDefault(event); fileHoverEnd(); addFiles(event)">
+        <i class="fa fa-download fa-5x"></i>
+        <br>
+        <span id="fileLabelText">
+          click to choose a file or drag it here
+        </span>
+      </label>
+    </div>
+    </div>
+    <br>
+  <button type="submit" name="button" class="save-btn"> save product</button>
+</form>
+</div>
+
+
+</section>
+
+
+<!-- scrypt -->
+<script>
+
+///////////////////////////drop files/////////////////////////////////////
+var dropFileForm = document.getElementById('dropFileForm');
+var fileLabelText = document.getElementById('fileLabelText');
+
+const previewContainer = document.getElementById('image-preview');
+const previewImage = previewContainer.querySelector('.ip-image');
+const previewDefaultText = previewContainer.querySelector('.ip-default-text');
+const fileInput = document.getElementById('fileInput');
+
+
+var droppedFiles;
+
+function overrideDefault(event){
+  // console.log("Hi there");
+  event.preventDefault();
+  event.stopPropagation();
+}
+
+function fileHover(){
+  dropFileForm.classList.add("fileHover");
+}
+
+function fileHoverEnd(){
+  dropFileForm.classList.remove("fileHover");
+}
+
+function addFiles(event){
+  droppedFiles = event.target.files || event.dataTransfer.files;
+
+  fileInput.files = droppedFiles;
+  showFiles(droppedFiles);
+}
+
+function showFiles(files){
+  // console.log(files);
+  if(files.length>0){
+
+    if (files.length>1) {
+      // console.log(files);
+      // fileLabelText.innerText = files.length + 'files selected';
+      fileLabelText.innerText = 'Please select only one image';
+      // files =null;
+      fileInput.files = null;
+
+      // console.log(files);
+      previewDefaultText.style.display = null;
+      previewImage.style.display = null;
+      previewImage.setAttribute("src", '');
+
+
+    }else {
+      // console.log(files);
+      fileLabelText.innerText = files[0].name;
+      const file = files[0];
+      /////////////////////////////////
+      const reader = new FileReader();
+      previewDefaultText.style.display = "none";
+      previewImage.style.display ="block";
+
+      reader.addEventListener("load", function(){
+        // console.log(this);
+        previewImage.setAttribute("src",this.result);
+      });
+      reader.readAsDataURL(file);
+
+      /////////////////////////////
+    }
+
+  }else{
+    previewDefaultText.style.display = null;
+    previewImage.style.display = null;
+    previewImage.setAttribute("src", '');
+
+    fileLabelText.innerText = 'click to choose a file or drag it here';
+
+ }
+}
+
+
+
+
+
+
+// const imgFile = document.getElementById('imgFile');
+// const previewContainer = document.getElementById('image-preview');
+// const previewImage = previewContainer.querySelector('.ip-image');
+// const previewDefaultText = previewContainer.querySelector('.ip-default-text');
+//
+//
+// imgFile.addEventListener("change", function(){
+// const file = this.files[0];
+// // console.log(file);
+//
+// if (file) {
+// const reader = new FileReader();
+// previewDefaultText.style.display = "none";
+// previewImage.style.display ="block";
+//
+// reader.addEventListener("load", function(){
+// // console.log(this);
+// previewImage.setAttribute("src",this.result);
+// });
+// reader.readAsDataURL(file);
+// }else{
+// // console.log("inside else");
+// previewDefaultText.style.display = null;
+// previewImage.style.display = null;
+// previewImage.setAttribute("src", '');
+// }
+//
+//
+// });
+
+
+</script>

@@ -8,14 +8,16 @@
 }
 
 .dashboard{
+  min-height: 80vh;
   margin-top: 5%;
   margin-bottom: 5%;
   width: 90%;
-  margin-left: auto;
-  margin-right: auto;
   display: flex;
   flex-direction: column;
-  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  /* text-align: center; */
 }
 
 .dashboard button{
@@ -46,9 +48,6 @@
   transform: translateY(-7px);
 }
 
-.dashboard a{
-  text-decoration: none;
-}
 
 .tablet-img{
   position: absolute;
@@ -94,15 +93,17 @@
   }
 
   .tablet-img{
-     top: 10%;
+    display: none;
+     /* top: 10%;
      left:10%;
-    height:35vh ;
+    height:35vh ; */
   }
 
   .computer-img{
-    top: 40%;
+    display: none;
+    /* top: 40%;
     right:10%;
-    height: 35vh;
+    height: 35vh; */
   }
 
 }
