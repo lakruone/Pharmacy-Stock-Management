@@ -1,4 +1,17 @@
 <section class="add_product">
+  {{#if success_msg}}
+  <div class="alert-success">
+  <span class="closebtn-success" onclick="this.parentElement.style.display='none';">&times;</span>
+   {{success_msg}}
+  </div>
+  {{/if}}
+
+  {{#if error_msg}}
+  <div class="alert-error">
+  <span class="closebtn-error" onclick="this.parentElement.style.display='none';">&times;</span>
+   {{error_msg}}
+  </div>
+  {{/if}}
 
 <div class="add-product-form">
 
@@ -10,7 +23,7 @@
 
       <div class="p-name">
         <label  class="label" for="productName">Product Name*</label>
-        <input type="text" name="product_name" id="productName" required>
+        <input type="text" name="product_name" id="productName" value="{{product_name}}" required>
       </div>
 
       <div class="quantity">

@@ -11,12 +11,15 @@
   </label>
   <nav>
     <ul>
-      <li class="hov"> <a class="nav-link" href="#" >Specs</a> </li>
       <li class="hov"> <a class="nav-link" href="#">About</a> </li>
 
       {{#if user}}
+      <li class="hov"> <a class="nav-link" href="/dashboard" >Dashboard</a> </li>
+
       <li class="hov"> <a class="nav-link" href="/logout">Logout</a> </li>
       {{else}}
+      <li class="hov"> <a class="nav-link" href="#" >Specs</a> </li>
+      
       <li class="hov"> <a class="nav-link" href="/">Login</a> </li>
       {{/if}}
 
