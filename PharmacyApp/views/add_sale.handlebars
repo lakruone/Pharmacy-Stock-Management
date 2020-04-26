@@ -43,7 +43,7 @@
     <!-- ////////////////////dev with close tag///////////////////////// -->
     <div class="wrapper">
     <div class="label-area test" id="new_0">
-      <span class="closebtn-error close" onclick="closeUpdate(); this.parentElement.remove();">&times;</span>
+      <span class="closebtn-error close" onclick="closeUpdate(event); this.parentElement.remove();">&times;</span>
 
 
       <div class="p-name" >
@@ -57,7 +57,7 @@
 
       <div class="quantity">
         <label class="label" >Quantity</label> <br>
-        <input type="number" class="qty" name="quantity"  value="1" min="1">
+        <input type="number" class="qty" name="quantity" onchange="quantityUpdate(event);" value="1" min="1">
       </div>
 
     </div>
@@ -104,6 +104,71 @@ var count = 1;
 var idCount =1;
 var totalPrice = 0;
 
+//when close button clicked
+function closeUpdate(e){
+  count--;
+  htmlcopy = $(".test:last").clone();
+
+  const devId = e.target.parentNode.id;
+  const container = e.target.parentNode;
+  const selectedVal = container.querySelector('.pdt').value;
+  if (selectedVal>0) {
+
+    //remoce that bill from the list
+    var billContainer = $('.'+devId);
+    var total_price_element = document.getElementById('totalPrice');
+    var bill_price_text = $('.'+devId+'> .bill-price').text();
+    var old_bill_price= parseInt(bill_price_text, 10);
+
+    totalPrice = totalPrice-old_bill_price;
+    billContainer.remove();
+    total_price_element.innerHTML = totalPrice+"/=";
+
+  }else {
+    console.log("do nothing");
+  }
+
+return;
+}
+
+
+//on quantity change
+function quantityUpdate(e){
+
+  const devId = e.target.parentNode.parentNode.id;
+  const container = e.target.parentNode.parentNode;
+
+  const quantity = e.target.value;
+  const  product_id = container.querySelector('.pdt').value;
+
+  if (product_id>0) {
+  ////////////////////////////////////////////////////
+
+  var bill_price_text = $('.'+devId+'> .bill-price').text();
+  var unit_price_text = $('.'+devId+'> .u-price').text();
+
+  var old_bill_price= parseInt(bill_price_text, 10);
+  var unit_price= parseInt(unit_price_text, 10);
+
+  var price = quantity*unit_price;
+  totalPrice = totalPrice+price-old_bill_price;
+
+  var total_price_element = document.getElementById('totalPrice');
+  var bill_quantity_element = $('.'+devId+'> .bill-qty');
+  var bill_price_element = $('.'+devId+'> .bill-price');
+
+  total_price_element.innerHTML = totalPrice+"/=";
+  bill_quantity_element.text(quantity) ;
+  bill_price_element.text(price) ;
+
+
+  ////////////////////////////////////////////////////
+  }else {
+    console.log("do nothing");
+  }
+
+}
+
 function updateBill(e){
   const devId = e.target.parentNode.parentNode.id;
   const container = e.target.parentNode.parentNode;
@@ -111,9 +176,19 @@ function updateBill(e){
   const product_id = e.target.value;
   const quantity = container.querySelector('.qty').value;
 
+  var billContainer = $('.'+devId);
+
   if (product_id==0) {
-    console.log("remoce that bill from the list");
-      //remoce that bill from the list
+
+    //remoce that bill from the list
+    var total_price_element = document.getElementById('totalPrice');
+    var bill_price_text1 = $('.'+devId+'> .bill-price').text();
+    var old_bill_price1= parseInt(bill_price_text1, 10);
+
+    totalPrice = totalPrice-old_bill_price1;
+    billContainer.remove();
+    total_price_element.innerHTML = totalPrice+"/=";
+
   }else {
 
     var data = {product_id:product_id}
@@ -123,24 +198,32 @@ function updateBill(e){
       var product_name = result.product_name;
       var price = quantity*unit_price;
 
-      //check if this dev id is in the bill
-      //if true => remove that bill from the list
-      //else do the following
-
-      totalPrice = totalPrice+price;
-      console.log(totalPrice);
-      //create bill
 
 
-      createBill(product_name,unit_price,quantity,price,totalPrice,devId);
 
+      if (billContainer.length==0) {
+        totalPrice = totalPrice+price;
+        createBill(product_name,unit_price,quantity,price,totalPrice,devId);
+
+      }else{
+
+        var bill_price_text = $('.'+devId+'> .bill-price').text();
+        var old_bill_price= parseInt(bill_price_text, 10);
+
+        totalPrice = totalPrice-old_bill_price+price;
+        billContainer.remove();
+
+        createBill(product_name,unit_price,quantity,price,totalPrice,devId);
+
+      }
 
     });
 
   }
 
-
 }
+
+
 
 function createBill(product_name,unit_price,quantity,price,totalPrice,devId){
   var total_price_element = document.getElementById('totalPrice');
@@ -153,9 +236,7 @@ function createBill(product_name,unit_price,quantity,price,totalPrice,devId){
 
 }
 
-function quantityUpdate(e){
-  console.log("update bill according to quantity change");
-}
+
 
 
 function addNewSale(){
@@ -166,7 +247,7 @@ function addNewSale(){
     htmlcopy.appendTo(".wrapper");
     idCount++;
   }else {
-    var htmlcopy2 = $(".test:last").clone(true).attr("id","new_"+idCount);
+    var htmlcopy2 = $(".test:last").clone().attr("id","new_"+idCount);
     htmlcopy2.appendTo(".wrapper");
     idCount++;
   }
@@ -175,11 +256,7 @@ function addNewSale(){
 
 }
 
-function closeUpdate(){
-  count--;
-  htmlcopy = $(".test:last").clone(true);
-  return;
-}
+
 
 
 

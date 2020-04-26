@@ -143,7 +143,7 @@ router.post('/add_sale',ensureAuthenticated, (req, res) => {
 
 //price_list
 router.post('/price_list', (req, res) => {
-	console.log(req.body.product_id);
+	// console.log(req.body.product_id);
 	const product_id = req.body.product_id;
 	User.getPriceAndName(product_id, (err,cb)=>{
 		if (err) {
