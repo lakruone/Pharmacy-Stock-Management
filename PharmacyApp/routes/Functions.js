@@ -25,7 +25,7 @@ const upload = multer({
 //new product page
 router.get('/add_new_product',ensureAuthenticated, (req, res) => {
 	res.render('add_new_product', {
-		title : 'Add New Product | Lakru-creation',
+		title : 'Add New Product | '+req.user.username,
 		style : 'add_new_product.css',
 	});
 });
@@ -84,6 +84,79 @@ router.post('/add_new',ensureAuthenticated, (req, res) => {
 	});
 
 });
+
+
+//add sale
+router.get('/add_sale',ensureAuthenticated, (req, res) => {
+	User.getProductList(req.user.user_id, (err,cb)=>{
+		if (err) {
+			console.log(err);
+		}else {
+			const product_list = cb;
+			// console.log(product_list);
+			if (product_list[0]==null) {
+				// console.log(product_list[0].product_id);
+				res.render('add_sale', {
+					title : 'Add Sale | '+req.user.username,
+					style : 'add_sale.css',
+					p_list : product_list,
+					error_msg : 'No products Available. You need atleast one product to add a sale.'
+				});
+
+			}else {
+
+				product_list.unshift({prodcut_id:0, product_name:"select product"});
+
+				// console.log(product_list);
+				res.render('add_sale', {
+					title : 'Add Sale | '+req.user.username,
+					style : 'add_sale.css',
+					p_list : product_list
+				});
+			}
+
+
+		}
+	})
+
+});
+
+router.post('/add_sale',ensureAuthenticated, (req, res) => {
+	console.log(req.body.quantity);
+});
+
+//preview_image
+// router.post('/preview_image', (req, res) => {
+// 	console.log(req.body.product_id);
+// 	const product_id = req.body.product_id;
+// 	User.findProductImage(product_id, (err,cb)=>{
+// 		if (err) {
+// 			console.log(err);
+// 		}else {
+// 			console.log(cb);
+// 			const image_name = cb;
+// 			return res.json({imgName:image_name});
+// 		}
+// 	});
+//
+// });
+
+//price_list
+router.post('/price_list', (req, res) => {
+	console.log(req.body.product_id);
+	const product_id = req.body.product_id;
+	User.getPriceAndName(product_id, (err,cb)=>{
+		if (err) {
+			console.log(err);
+		}else {
+			// console.log(cb);
+
+			return res.json({product_name:cb.product_name ,price:cb.price});
+		}
+	});
+
+});
+
 
 
 module.exports = router;

@@ -104,20 +104,20 @@
   }
 
   ///////////////////////// submit login/////////////////////////////////////////////////////
-  function submit_login(){
-
-    if (check_empty_fields()>0) {
-      console.log("some fields empty");
-      return;
-    }else {
-      // console.log("continue your work");
-      var username = document.getElementById('username').value;
-      var password = document.getElementById('password').value;
-      console.log(username);
-      console.log(password);
-      var data = {username : username , password :password}
-
-      $.post("/login", data).done();
+  // function submit_login(){
+  //
+  //   if (check_empty_fields()>0) {
+  //     console.log("some fields empty");
+  //     return;
+  //   }else {
+  //     // console.log("continue your work");
+  //     var username = document.getElementById('username').value;
+  //     var password = document.getElementById('password').value;
+  //     console.log(username);
+  //     console.log(password);
+  //     var data = {username : username , password :password}
+  //
+  //     $.post("/login", data).done();
 
       // $.post("/login", data, function(result){
       //   console.log(result);
@@ -133,33 +133,33 @@
       //
       // });
 
-    }
-  }
+  //   }
+  // }
 
-  function check_empty_fields(){
-    var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value;
-
-    var display_u = document.getElementsByClassName("username-log")[0];
-    var display_p = document.getElementsByClassName("password-log")[0];
-    var error_count = 0;
-
-    if (username.length==0) {
-      display_u.innerHTML = "please enter username";
-      error_count++;
-    }else  {
-      display_u.innerHTML = "";
-    }
-
-    if (password.length==0) {
-      display_p.innerHTML = "please enter password";
-      error_count++;
-    }else {
-      display_p.innerHTML = "";
-    }
-
-    return error_count;
-  }
+  // function check_empty_fields(){
+  //   var username = document.getElementById('username').value;
+  //   var password = document.getElementById('password').value;
+  //
+  //   var display_u = document.getElementsByClassName("username-log")[0];
+  //   var display_p = document.getElementsByClassName("password-log")[0];
+  //   var error_count = 0;
+  //
+  //   if (username.length==0) {
+  //     display_u.innerHTML = "please enter username";
+  //     error_count++;
+  //   }else  {
+  //     display_u.innerHTML = "";
+  //   }
+  //
+  //   if (password.length==0) {
+  //     display_p.innerHTML = "please enter password";
+  //     error_count++;
+  //   }else {
+  //     display_p.innerHTML = "";
+  //   }
+  //
+  //   return error_count;
+  // }
 
 
   ///////////////////////submit register//////////////////////////////////

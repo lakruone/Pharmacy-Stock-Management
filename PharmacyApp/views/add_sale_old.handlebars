@@ -1,0 +1,90 @@
+<section class="add_sale">
+
+  {{#if success_msg}}
+  <div class="alert-success">
+  <span class="closebtn-success" onclick="this.parentElement.style.display='none';">&times;</span>
+   {{success_msg}}
+  </div>
+  {{/if}}
+
+  {{#if error_msg}}
+  <div class="alert-error">
+  <span class="closebtn-error" onclick="this.parentElement.style.display='none';">&times;</span>
+   {{error_msg}}
+  </div>
+  {{/if}}
+
+<div class="add-sale-form">
+
+  <h1>Add Sale</h1>
+
+  <form  action="/add_sale" method="post">
+
+    <div class="label-area">
+
+      <div class="p-name">
+        <label  class="label" for="productName">Select Product</label>
+        <select id="product" onchange="previewImage();" name="product_id">
+          {{#each p_list}}
+          <option value="{{this.product_id}}">{{this.product_name}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div class="quantity">
+        <label class="label" for="quantity">Quantity</label>
+        <input type="number" name="quantity" id="quantity" >
+      </div>
+
+      <div class="price">
+        <label class="label" for="price">Price (LKR.)</label>
+        <input type="number" name="price" id="price" >
+      </div>
+
+    </div>
+
+    <div class="image-preview" id="image-preview">
+      <img src="" alt="Image Preview" class="ip-image">
+      <span class="ip-default-text">Product Preview</span>
+    </div>
+
+    <br>
+  <button type="submit" name="button" class="save-btn">Save</button>
+</form>
+</div>
+
+
+</section>
+
+<script type="text/javascript">
+
+
+function previewImage(){
+  var product_id = document.getElementById('product').value;
+  const previewContainer = document.getElementById('image-preview');
+  const previewImage = previewContainer.querySelector('.ip-image');
+  const previewDefaultText = previewContainer.querySelector('.ip-default-text');
+  console.log(product_id);
+
+  var data ={product_id:product_id};
+
+  $.post("/preview_image", data, function(result) {
+    console.log(result.imgName[0].image);
+    const imageName = result.imgName[0].image;
+
+
+    if (imageName==null) {
+      previewDefaultText.style.display = null;
+      previewImage.style.display = null;
+      previewImage.setAttribute("src", '');
+    }else {
+      previewDefaultText.style.display = "none";
+      previewImage.style.display ="block";
+      previewImage.src = '/uploads/'+imageName;
+    }
+
+  });
+
+}
+
+</script>

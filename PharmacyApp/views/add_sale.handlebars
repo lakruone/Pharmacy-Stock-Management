@@ -1,0 +1,188 @@
+<section class="add_sale">
+
+  {{#if success_msg}}
+  <div class="alert-success">
+  <span class="closebtn-success" onclick="this.parentElement.style.display='none';">&times;</span>
+   {{success_msg}}
+  </div>
+  {{/if}}
+
+  {{#if error_msg}}
+  <div class="alert-error">
+  <span class="closebtn-error" onclick="this.parentElement.style.display='none';">&times;</span>
+   {{error_msg}}
+  </div>
+  {{/if}}
+
+<div class="add-sale-form">
+
+  <h1>Add Sale</h1>
+
+  <form  action="/add_sale" method="post">
+
+    <!-- /////////////////////////////////////////////////////////// -->
+    <!-- <div class="label-area">
+      <span class="closebtn-error" onclick="this.parentElement.remove();">&times;</span>
+      <div class="p-name">
+        <label  class="label" for="productName">Select Product</label> <br>
+        <select  class="bill"  name="product_id">
+          {{#each p_list}}
+          <option value="{{this.product_id}}">{{this.product_name}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div class="quantity">
+        <label class="label" for="quantity">Quantity</label> <br>
+        <input type="number" name="quantity"  value="1" min="1">
+      </div>
+
+    </div> -->
+    <!-- ////////////////////////////////////////////////////////////// -->
+
+    <!-- ////////////////////dev with close tag///////////////////////// -->
+    <div class="wrapper">
+    <div class="label-area test" id="new_0">
+      <span class="closebtn-error close" onclick="closeUpdate(); this.parentElement.remove();">&times;</span>
+
+
+      <div class="p-name" >
+        <label  class="label" >Select Product</label> <br>
+        <select  class="pdt" name="product_id" onchange="updateBill(event);">
+          {{#each p_list}}
+          <option value="{{this.product_id}}">{{this.product_name}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div class="quantity">
+        <label class="label" >Quantity</label> <br>
+        <input type="number" class="qty" name="quantity"  value="1" min="1">
+      </div>
+
+    </div>
+  </div>
+  <!-- ///////////////////////////////////////////// -->
+
+<button type="button" name="button"  onclick="addNewSale();">ADD +</button>
+
+    <div class="bill-preview" id="image-preview">
+      <h3>Bill | {{user.username}}</h3> <hr>
+      <div class="bill-head">
+        <p class="name">product name</p>
+        <p class="u-price">unit price</p>
+        <p class="bill-qty">quantity</p>
+        <p class="bill-price">price</p>
+      </div>
+      <hr>
+
+      <div class="bill-wrapper">
+        <!-- bill forms here -->
+      </div>
+
+
+      <hr>
+      <div class="total">
+        <p>Total  : </p> <p id="totalPrice" class="totalPrice">0</p>
+      </div>
+    </div>
+
+    <br>
+  <button type="submit" name="button" class="save-btn" >Save</button>
+</form>
+</div>
+
+
+</section>
+
+<script src="/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+
+var htmlcopy=null;
+var count = 1;
+var idCount =1;
+var totalPrice = 0;
+
+function updateBill(e){
+  const devId = e.target.parentNode.parentNode.id;
+  const container = e.target.parentNode.parentNode;
+
+  const product_id = e.target.value;
+  const quantity = container.querySelector('.qty').value;
+
+  if (product_id==0) {
+    console.log("remoce that bill from the list");
+      //remoce that bill from the list
+  }else {
+
+    var data = {product_id:product_id}
+    $.post("/price_list", data, function(result) {
+
+      var unit_price = result.price;
+      var product_name = result.product_name;
+      var price = quantity*unit_price;
+
+      //check if this dev id is in the bill
+      //if true => remove that bill from the list
+      //else do the following
+
+      totalPrice = totalPrice+price;
+      console.log(totalPrice);
+      //create bill
+
+
+      createBill(product_name,unit_price,quantity,price,totalPrice,devId);
+
+
+    });
+
+  }
+
+
+}
+
+function createBill(product_name,unit_price,quantity,price,totalPrice,devId){
+  var total_price_element = document.getElementById('totalPrice');
+
+   $( "<div class='bill-data "+devId+"'> <p class='name'>"+product_name+"</p><p class='u-price'>"+unit_price+"</p><p class='bill-qty'>"+quantity+"</p><p class='bill-price'>"+price+"</p></div>").appendTo( ".bill-wrapper" );
+
+   total_price_element.innerHTML = totalPrice+"/=";
+
+    console.log("done");
+
+}
+
+function quantityUpdate(e){
+  console.log("update bill according to quantity change");
+}
+
+
+function addNewSale(){
+  console.log("working");
+
+  if (count==0) {
+    htmlcopy.attr("id","new_"+idCount);
+    htmlcopy.appendTo(".wrapper");
+    idCount++;
+  }else {
+    var htmlcopy2 = $(".test:last").clone(true).attr("id","new_"+idCount);
+    htmlcopy2.appendTo(".wrapper");
+    idCount++;
+  }
+  count++;
+  return;
+
+}
+
+function closeUpdate(){
+  count--;
+  htmlcopy = $(".test:last").clone(true);
+  return;
+}
+
+
+
+
+
+</script>

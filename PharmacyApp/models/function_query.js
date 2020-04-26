@@ -33,3 +33,53 @@ module.exports.findProductByName =(product_name,user_id, callback) =>{
      }
    });
 }
+
+
+
+//get product list
+module.exports.getProductList =(user_id, callback) =>{
+  const qry = "select product_id,product_name from product where user_id=?";
+   pool.query(qry,[user_id], (err,result) =>{
+     if (err){
+       return callback(err,null);
+     }else {
+       // console.log(fields);
+       return callback(null,result);
+
+     }
+
+   });
+}
+
+
+//findProductImage
+// module.exports.findProductImage =(product_id, callback) =>{
+//   const qry = "select image from product where product_id=?";
+//    pool.query(qry,[product_id], (err,result) =>{
+//      if (err){
+//        return callback(err,null);
+//      }else {
+//        // console.log(fields);
+//        return callback(null,result);
+//
+//      }
+//
+//    });
+// }
+
+
+
+//getPriceAndName
+module.exports.getPriceAndName =(product_id, callback) =>{
+  const qry = "select product_name,price from product where product_id=?";
+   pool.query(qry,[product_id], (err,result) =>{
+     if (err){
+       return callback(err,null);
+     }else {
+       // console.log(fields);
+       return callback(null,result[0]);
+
+     }
+
+   });
+}
