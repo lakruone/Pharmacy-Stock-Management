@@ -221,56 +221,53 @@
 
 
 @media  screen and (max-width:1024px) {
-  .add-product-form{
+  .add-sale-form{
     width: 100%;
   }
-  .alert {
-    width: 100%;
 
-  }
 
 }
 
 
 @media  screen and (max-width:660px) {
 
-  .add-product-form{
+  .add-sale-form{
     /* margin-top: 5px; */
-    padding-top:10px;
+    padding:10px;
   }
 
-  .p-name, .quantity, .price{
-  flex-direction: column;
-
+  .label-area{
+    flex-direction: column;
   }
 
-  .add-product-form .label{
-
+  .add-sale-form .label{
     font-size: 15px;
     margin: 0 0 0 0;
   }
-
-
-  .label-area input{
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
-
-
-
-
-
-  .image-preview{
-    min-height: 100px;
-    margin-top: 5px;
-  }
-
-
 
   .save-btn{
     margin-top: 30px;
     width: 100%;
     border-radius: 30px;
   }
+
+
+  .close{
+
+    width: 5px;
+    margin-bottom: 5px;
+  }
+
+  .p-name select{
+    width: 100%;
+  }
+
+  .bill-preview .bill-head{
+    font-size: 10px;
+  }
+
+
+
+
 
 }

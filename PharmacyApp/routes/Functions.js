@@ -122,8 +122,74 @@ router.get('/add_sale',ensureAuthenticated, (req, res) => {
 });
 
 router.post('/add_sale',ensureAuthenticated, (req, res) => {
-	console.log(req.body.quantity);
+
+	const product_ids = req.body.product_id;
+	const quantity_list = req.body.quantity;
+	const user_id = req.user.user_id;
+	const arrayLength = req.body.product_id.length;
+
+	User.insertBill(user_id, (err, cb)=>{
+		if (err) {
+			console.log(err);
+		}else {
+			const bill_id =cb.insertId;
+			// console.log(cb.insertId);
+
+			for (var i = 0; i < arrayLength; i++) {
+				var quantity = quantity_list[i];
+				var product_id = product_ids[i];
+
+				saveAndUpdateSale(product_id,quantity,bill_id);
+
+			}//loop finished
+
+			User.getProductList(user_id, (err1,cb1)=>{
+				if (err1) {
+					console.log(err1);
+				}else {
+					const product_list = cb1;
+					product_list.unshift({prodcut_id:0, product_name:"select product"});
+
+					// console.log(product_list);
+					res.render('add_sale', {
+						title : 'Add Sale | '+req.user.username,
+						style : 'add_sale.css',
+						p_list : product_list,
+						success_msg : 'Sale added successfully..!'
+					});
+
+
+				}
+			});
+
+		}
+	});
+
+
 });
+
+//this function for above route
+function saveAndUpdateSale(product_id,quantity,bill_id){
+
+	User.reduceStockQuantity(product_id,quantity, (err1,cb1)=>{
+		if (err1) {
+			console.log(err1);
+		}else {
+			// console.log(cb1);
+			var sale_product = cb1.product_name;
+			var	unit_price = cb1.price;
+
+			User.addSale(bill_id,sale_product,quantity,unit_price, (err2,cb2)=>{
+				if (err2) {
+					console.log(err2);
+				}else {
+					console.log(cb2);
+				}
+			});
+		}
+	});
+
+}
 
 //preview_image
 // router.post('/preview_image', (req, res) => {

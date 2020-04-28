@@ -12,11 +12,30 @@ PRIMARY KEY (`user_id`)) ENGINE = InnoDB;
 
 CREATE TABLE product (
     product_id int(255) NOT NULL  AUTO_INCREMENT,
-    user-id int(255) NOT NULL,
+    user_id int(255) NOT NULL,
     product_name varchar(255) NOT NULL,
     quantity int(255) NOT NULL,
     price int(255) NOT NULL,
     image varchar(255),
     PRIMARY KEY (product_id),
     FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE bill (
+    bill_id int(255) NOT NULL  AUTO_INCREMENT,
+    user_id int(255) NOT NULL,
+    sale_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_price int(255) NOT NULL,
+    PRIMARY KEY (bill_id),
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE sale (
+    sale_id int(255) NOT NULL  AUTO_INCREMENT,
+    bill_id int(255) NOT NULL,
+    sale_product varchar(255) NOT NULL,
+    sale_quantity int(255) NOT NULL,
+    sale_price int(255) NOT NULL,
+    PRIMARY KEY (sale_id),
+    FOREIGN KEY (bill_id) REFERENCES bill(bill_id)
 );
