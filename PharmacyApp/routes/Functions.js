@@ -224,5 +224,17 @@ router.post('/price_list', (req, res) => {
 });
 
 
+//view sales
+router.get('/view_sale', (req, res) => {
+	console.log("view sales succcess");
+
+	res.render('view_sales', {
+		title : 'View Sales',
+		style : 'view_sales.css'
+	});
+
+});
+
+
 
 module.exports = router;

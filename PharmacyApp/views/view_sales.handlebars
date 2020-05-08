@@ -1,0 +1,128 @@
+<section class="view_sale">
+
+
+
+<div class="view-sale-form">
+
+  <h1>View Sales</h1>
+
+
+<!-- /////////////////////////////////////////////////////////////////////////////// -->
+
+
+  <div id="form-area" class="form-area">
+
+      <div class="button-box">
+        <div id="btn"></div>
+        <button type="button" name="button" class="toggle-btn" onclick="dailySales()">View Daily Sales</button>
+        <button type="button" name="button" class="toggle-btn" onclick="monthlySales()">View Monthly Sales</button>
+      </div>
+
+
+      <!-- ////////////////////////////////////////////////////////////// -->
+      <div id="daily-sales" class="sales-div">
+        daily sales
+
+          <div class="bill-preview" id="image-preview">
+            <h3>Bill | {{user.username}}</h3> <hr>
+            <div class="bill-head">
+              <p class="name">product name</p>
+              <p class="u-price">unit price</p>
+              <p class="bill-qty">quantity</p>
+              <p class="bill-price">price</p>
+            </div>
+            <hr>
+
+            <div class="bill-wrapper">
+              <!-- bill forms here -->
+            </div>
+
+
+            <hr>
+            <div class="total">
+              <p>Total  : </p> <p id="totalPrice" class="totalPrice">0</p>
+            </div>
+          </div>
+        </div>
+          <!-- ////////////////////////////////////////////////////////////// -->
+
+
+          <!-- ////////////////////////////////////////////////////////////// -->
+          <div id="monthly-sales" class="sales-div">
+            Monthly sales <br>
+            jskasba  <br>
+            sajajbac <br>
+
+              <div class="bill-preview" id="image-preview">
+                <h3>Bill | {{user.username}}</h3> <hr>
+                <div class="bill-head">
+                  <p class="name">product name</p>
+                  <p class="u-price">unit price</p>
+                  <p class="bill-qty">quantity</p>
+                  <p class="bill-price">price</p>
+                </div>
+                <hr>
+
+                <div class="bill-wrapper">
+                  <!-- bill forms here -->
+                </div>
+
+
+                <hr>
+                <div class="total">
+                  <p>Total  : </p> <p id="totalPrice" class="totalPrice">0</p>
+                </div>
+              </div>
+            </div>
+              <!-- ////////////////////////////////////////////////////////////// -->
+
+  </div>
+
+
+
+
+
+
+
+</div>
+
+
+</section>
+
+<script src="/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+
+
+////////////change styles with toggle button/////////////////////
+  var parent = document.querySelector(".form-area");
+
+  var x = document.getElementById('daily-sales');
+  var y = document.getElementById('monthly-sales');
+  var z = document.getElementById('btn');
+
+  var parentHeight = parseInt(window.getComputedStyle(x).height)+100 + "px";
+  parent.style.height = parentHeight;
+
+
+  function monthlySales(){
+    x.style.left ="-800px";
+    z.style.left = "220px";
+    y.style.left ="15px";
+
+    parentHeight = parseInt(window.getComputedStyle(y).height)+100 + "px";
+    parent.style.height = parentHeight;
+
+  }
+
+  function dailySales(){
+    y.style.left = "800px";
+    z.style.left = "0";
+    x.style.left ="15px";
+
+    parentHeight = parseInt(window.getComputedStyle(x).height)+100 + "px";
+    parent.style.height = parentHeight;
+
+  }
+
+</script>

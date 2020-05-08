@@ -7,7 +7,16 @@ CREATE TABLE `pharmacy_data`.`user` (
 `password` VARCHAR(255) NOT NULL ,
 PRIMARY KEY (`user_id`)) ENGINE = InnoDB;
 
-
+CREATE TABLE user (
+    user_id int(255) NOT NULL  AUTO_INCREMENT,
+    username varchar(255) NOT NULL,
+    email varchar(255) NOT NULL ,
+  	firstname varchar(255) NOT NULL ,
+  	lastname varchar(255) NOT NULL ,
+  	password varchar(255) NOT NULL ,
+    phone int(20) NOT NULL,
+    PRIMARY KEY (user_id)
+);
 
 
 CREATE TABLE product (
@@ -25,7 +34,6 @@ CREATE TABLE bill (
     bill_id int(255) NOT NULL  AUTO_INCREMENT,
     user_id int(255) NOT NULL,
     sale_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    total_price int(255) NOT NULL,
     PRIMARY KEY (bill_id),
     FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
@@ -35,7 +43,7 @@ CREATE TABLE sale (
     bill_id int(255) NOT NULL,
     sale_product varchar(255) NOT NULL,
     sale_quantity int(255) NOT NULL,
-    sale_price int(255) NOT NULL,
+    unit_price int(255) NOT NULL,
     PRIMARY KEY (sale_id),
     FOREIGN KEY (bill_id) REFERENCES bill(bill_id)
 );

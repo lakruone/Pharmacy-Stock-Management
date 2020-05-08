@@ -9,5 +9,14 @@ var pool      =    mysql.createPool({
     debug    :  false
 });
 
+// var pool      =    mysql.createPool({
+//     connectionLimit : 20, //important
+//     host     : 'us-cdbr-east-06.cleardb.net',
+//     user     : 'b37be61e71e028',
+//     password : 'e5a28d87',
+//     database : 'heroku_acf56647ca4b94d',
+//     debug    :  false
+// });
+
 
 module.exports =pool;

@@ -1,0 +1,217 @@
+
+/* main area */
+.view_sale{
+  width: 90%;
+  margin: auto;
+  margin-top: 20px;
+  min-height: 80vh;
+  align-items: center;
+
+}
+
+
+
+
+.view_sale h1{
+  color: #5546FB;
+  text-align: center;
+  text-shadow: 2px 2px #46DCFB;
+  margin-bottom: 20px;
+}
+
+.view-sale-form{
+  width: 800px;
+  margin: auto;
+  padding: 30px;
+  border: 3px solid #5DADE2;
+  border-radius: 20px;
+  background-color: #F7F9F9;
+}
+
+
+/* toggle forms with button click */
+.form-area{
+  width: 750px;
+  /* height:600px; */
+  position: relative;
+  padding: 5px;
+  overflow: hidden;
+}
+
+.button-box{
+  width: 440px;
+  margin: 35px auto;
+  margin-top: 10px;
+  position: relative;
+  box-shadow: 0 0 10px 9px #5f5f79;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.button-box button{
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.toggle-btn{
+  padding: 10px 30px;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  outline: none;
+  position: relative;
+}
+
+#btn{
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 220px;
+  height: 100%;
+  background: linear-gradient(to right, #2E86C1,#AED6F1);
+  border-radius: 10px;
+  transition: 0.5s;
+}
+
+.sales-div{
+  position: absolute;
+  width: 700px;
+  transition: 0.5s;
+}
+
+#daily-sales{
+  left: 15px;
+}
+
+#monthly-sales{
+  left: 800px;
+}
+
+
+/* sales display area */
+.bill-preview{
+  width: 100%;
+  min-height: 200px;
+  border: 2px solid #dddd;
+  margin-top: 15px;
+  padding: 5px;
+}
+
+.bill-preview h3{
+  text-align: center;
+  font-weight: 400;
+}
+
+.bill-preview .bill-head{
+  display: flex;
+  font-weight: 500px;
+  color: #5f5f79;
+}
+
+ .name{
+  width: 40%;
+}
+
+.u-price{
+  width: 20%;
+  text-align: center;
+}
+
+.bill-qty{
+  width: 15%;
+  text-align: center;
+}
+
+.bill-price{
+  width: 25%;
+  text-align: right;
+}
+
+.bill-preview .bill-wrapper{
+  min-height: 150px;
+}
+.bill-preview .bill-data{
+  display: flex;
+}
+
+.bill-preview .total{
+  display: flex;
+  justify-content: space-around;
+}
+
+
+
+@media  screen and (max-width:1024px) {
+  .add-sale-form{
+    width: 600px;
+  }
+
+  /* toggle forms with button click */
+  .form-area{
+    width: 650px;
+
+  }
+
+  .button-box{
+    width: 440px;
+    margin: 35px auto;
+    position: relative;
+    box-shadow: 0 0 10px 9px #5f5f79;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .button-box button{
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .toggle-btn{
+    padding: 10px 30px;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    outline: none;
+    position: relative;
+  }
+
+  #btn{
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 220px;
+    height: 100%;
+    background: linear-gradient(to right, #2E86C1,#AED6F1);
+    border-radius: 10px;
+    transition: 0.5s;
+  }
+
+  .sales-div{
+    position: absolute;
+    width: 700px;
+    transition: 0.5s;
+  }
+
+  #daily-sales{
+    left: 15px;
+  }
+
+  #monthly-sales{
+    left: 800px;
+  }
+
+
+}
+
+
+@media  screen and (max-width:660px) {
+
+  .add-sale-form{
+    /* margin-top: 5px; */
+    padding:10px;
+  }
+
+
+
+
+}

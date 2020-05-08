@@ -227,4 +227,9 @@ span{
     left: 450px;
   }
 
+  .large-circle , .medium-circle, .small-circle{
+    display: none;
+  }
+
+
 }

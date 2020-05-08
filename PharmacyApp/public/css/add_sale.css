@@ -267,6 +267,12 @@
   }
 
 
+  .aler-error , .alert-success{
+    font-size: 15px;
+    width: 100%;
+  }
+
+
 
 
 
