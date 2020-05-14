@@ -5,6 +5,9 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
 
+const hbs_helpers = require('handlebars-helpers');
+var math = hbs_helpers.math();
+
 
 const app = express();
 
@@ -23,6 +26,8 @@ require('./config/passport')(passport);
 //handlebars middleware
 app.engine('handlebars',exphbs({defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
+
+
 
 //Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false}));

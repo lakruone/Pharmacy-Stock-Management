@@ -1,5 +1,12 @@
 <section class="view_sale">
 
+  {{#if error_msg}}
+  <div class="alert-error">
+  <span class="closebtn-error" onclick="this.parentElement.style.display='none';">&times;</span>
+   {{error_msg}}
+  </div>
+  {{/if}}
+
 
 
 <div class="view-sale-form">
@@ -21,7 +28,13 @@
 
       <!-- ////////////////////////////////////////////////////////////// -->
       <div id="daily-sales" class="sales-div">
-        daily sales
+        <input type="text" id="user-id" value="{{user.user_id}}" style="visibility:hidden">
+
+        <div class="date">
+          <label  class="label" for="productName">Select Date : </label>
+          <input type="date"  id="saleDate" value="{{date}}" onchange="updateDailySale(event);">
+        </div>
+
 
           <div class="bill-preview" id="image-preview">
             <h3>Bill | {{user.username}}</h3> <hr>
@@ -33,14 +46,23 @@
             </div>
             <hr>
 
-            <div class="bill-wrapper">
+            <div class="bill-wrapper daily-biil-wrapper">
               <!-- bill forms here -->
+              {{#each sales}}
+                <div class='bill-data daily-bill-data'>
+                  <p class='name'>{{sale_product}}</p>
+                  <p class='u-price'>{{unit_price}}</p>
+                  <p class='bill-qty'>{{sale_quantity}}</p>
+                  <p class='bill-price'>{{multiply sale_quantity unit_price}}</p>
+                </div>
+              {{/each}}
+
             </div>
 
 
             <hr>
             <div class="total">
-              <p>Total  : </p> <p id="totalPrice" class="totalPrice">0</p>
+              <p>Total  : </p> <p id="totalPrice" class="totalPrice">{{total}}/=</p>
             </div>
           </div>
         </div>
@@ -64,12 +86,15 @@
                 <hr>
 
                 <div class="bill-wrapper">
+
+
                   <!-- bill forms here -->
                 </div>
 
 
                 <hr>
                 <div class="total">
+
                   <p>Total  : </p> <p id="totalPrice" class="totalPrice">0</p>
                 </div>
               </div>
@@ -122,6 +147,78 @@
 
     parentHeight = parseInt(window.getComputedStyle(x).height)+100 + "px";
     parent.style.height = parentHeight;
+
+  }
+
+
+
+  function checkBillDataElementAvailable(){
+    var daily_sales_element = document.getElementById('daily-sales');
+    var bill_data_element = daily_sales_element.querySelector('.daily-bill-data');
+
+    if (bill_data_element==null) {
+      return null;
+    }else {
+      return bill_data_element;
+    }
+  }
+
+
+  function updateDailySale(e){
+    var date = e.target.value;
+    const user_id = document.getElementById('user-id').value;
+
+
+    console.log(date);
+
+    const data ={user_id:user_id, date:date}
+
+    $.post("/dailySales", data, function(result) {
+      console.log(result);
+      var totalPrice = 0;
+      // console.log(result.result[0].sale_product);
+      var bill_elmnt = checkBillDataElementAvailable();
+
+      if (bill_elmnt==null) {
+        console.log("do nothing");
+      }else {
+        document.querySelectorAll(".daily-bill-data").forEach(el => el.remove());
+      }
+
+
+      if (result.result==null) {
+        console.log("do nothing");
+
+      }else {
+
+        console.log("not ull");
+        for (var i = 0; i < result.result.length; i++) {
+          const product_name = result.result[i].sale_product;
+          const unit_price = result.result[i].unit_price;
+          const quantity = result.result[i].sale_quantity;
+          const price = unit_price*quantity;
+          totalPrice = totalPrice+price;
+
+          updateBill(product_name,unit_price,quantity,price);
+
+        }
+        var total_price_element = document.getElementById('totalPrice');
+        total_price_element.innerHTML = totalPrice+"/=";
+      }
+
+      dailySales();  //to adjust the height according to new bill
+      
+
+    });
+
+  }
+
+  function updateBill(product_name,unit_price,quantity,price){
+
+     $( "<div class='bill-data daily-bill-data' > <p class='name'>"+product_name+"</p><p class='u-price'>"+unit_price+"</p><p class='bill-qty'>"+quantity+"</p><p class='bill-price'>"+price+"</p></div>").appendTo( ".daily-biil-wrapper" );
+
+
+      console.log("done");
 
   }
 

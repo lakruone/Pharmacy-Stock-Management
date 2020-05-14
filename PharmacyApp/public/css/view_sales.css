@@ -11,6 +11,37 @@
 
 
 
+/* Danger alert message */
+.alert-error {
+  padding: 10px;
+  background-color: #ffeeba;
+  font-size: 20px;
+  color: #856404;
+  width: 60%;
+  margin: auto;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  /* border: 2px solid #721c24; */
+}
+
+.closebtn-error {
+  margin-left: 15px;
+  color: #856404;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn-error:hover {
+  color: white;
+}
+/* ////////////////////////////// */
+
+
+
 
 .view_sale h1{
   color: #5546FB;
@@ -87,6 +118,8 @@
   left: 800px;
 }
 
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button { display: none; }
 
 /* sales display area */
 .bill-preview{

@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const {ensureAuthenticated} = require('../config/auth');
-const User = require('../models/function_query');
+const Function = require('../models/function_query');
 
 
 
@@ -50,7 +50,7 @@ router.post('/add_new',ensureAuthenticated, (req, res) => {
 				product_image = req.file.filename;
 			}
 
-			User.findProductByName(product_name,user_id, (err,cb1)=>{
+			Function.findProductByName(product_name,user_id, (err,cb1)=>{
 				if (err) {
 					console.log(err);
 				}
@@ -64,7 +64,7 @@ router.post('/add_new',ensureAuthenticated, (req, res) => {
 					});
 				}else{
 
-					User.saveProduct(user_id,product_name,quantity,price,product_image, (err, cb2)=>{
+					Function.saveProduct(user_id,product_name,quantity,price,product_image, (err, cb2)=>{
 						if(err){
 							console.log(err);
 						}else{
@@ -88,7 +88,7 @@ router.post('/add_new',ensureAuthenticated, (req, res) => {
 
 //add sale
 router.get('/add_sale',ensureAuthenticated, (req, res) => {
-	User.getProductList(req.user.user_id, (err,cb)=>{
+	Function.getProductList(req.user.user_id, (err,cb)=>{
 		if (err) {
 			console.log(err);
 		}else {
@@ -128,7 +128,7 @@ router.post('/add_sale',ensureAuthenticated, (req, res) => {
 	const user_id = req.user.user_id;
 	const arrayLength = req.body.product_id.length;
 
-	User.insertBill(user_id, (err, cb)=>{
+	Function.insertBill(user_id, (err, cb)=>{
 		if (err) {
 			console.log(err);
 		}else {
@@ -143,7 +143,7 @@ router.post('/add_sale',ensureAuthenticated, (req, res) => {
 
 			}//loop finished
 
-			User.getProductList(user_id, (err1,cb1)=>{
+			Function.getProductList(user_id, (err1,cb1)=>{
 				if (err1) {
 					console.log(err1);
 				}else {
@@ -171,7 +171,7 @@ router.post('/add_sale',ensureAuthenticated, (req, res) => {
 //this function for above route
 function saveAndUpdateSale(product_id,quantity,bill_id){
 
-	User.reduceStockQuantity(product_id,quantity, (err1,cb1)=>{
+	Function.reduceStockQuantity(product_id,quantity, (err1,cb1)=>{
 		if (err1) {
 			console.log(err1);
 		}else {
@@ -179,7 +179,7 @@ function saveAndUpdateSale(product_id,quantity,bill_id){
 			var sale_product = cb1.product_name;
 			var	unit_price = cb1.price;
 
-			User.addSale(bill_id,sale_product,quantity,unit_price, (err2,cb2)=>{
+			Function.addSale(bill_id,sale_product,quantity,unit_price, (err2,cb2)=>{
 				if (err2) {
 					console.log(err2);
 				}else {
@@ -195,7 +195,7 @@ function saveAndUpdateSale(product_id,quantity,bill_id){
 // router.post('/preview_image', (req, res) => {
 // 	console.log(req.body.product_id);
 // 	const product_id = req.body.product_id;
-// 	User.findProductImage(product_id, (err,cb)=>{
+// 	Function.findProductImage(product_id, (err,cb)=>{
 // 		if (err) {
 // 			console.log(err);
 // 		}else {
@@ -211,7 +211,7 @@ function saveAndUpdateSale(product_id,quantity,bill_id){
 router.post('/price_list', (req, res) => {
 	// console.log(req.body.product_id);
 	const product_id = req.body.product_id;
-	User.getPriceAndName(product_id, (err,cb)=>{
+	Function.getPriceAndName(product_id, (err,cb)=>{
 		if (err) {
 			console.log(err);
 		}else {
@@ -225,13 +225,78 @@ router.post('/price_list', (req, res) => {
 
 
 //view sales
-router.get('/view_sale', (req, res) => {
-	console.log("view sales succcess");
+router.get('/view_sale',ensureAuthenticated, (req, res) => {
+	const date = new Date().toISOString().substr(0,10);
+	// const date0 = '2020-04-28 '+'00:00:00';
+	// const date1 = '2020-04-28 '+'23:59:59';
+	const date0 = date+' 00:00:00';
+	const date1 = date+' 23:59:59';
 
-	res.render('view_sales', {
-		title : 'View Sales',
-		style : 'view_sales.css'
+	const user_id = req.user.user_id;
+	console.log(user_id);
+	console.log(date);
+
+
+
+	Function.getSalesByDate(user_id,date0,date1, (err,result)=>{
+		if (err) {
+			console.log(err);
+		}else {
+			console.log(result);
+			var total =0;
+
+			if (result==null) {
+				res.render('view_sales', {
+					title : 'View Sales',
+					style : 'view_sales.css',
+					date : date,
+					sales : result,
+					total : total,
+					error_msg : 'Oops.! You have no sales today..!'
+				});
+
+			}else {
+				for (var i = 0; i < result.length; i++) {
+					const price = result[i].unit_price* result[i].sale_quantity;
+					total = total +price;
+				}
+				res.render('view_sales', {
+					title : 'View Sales',
+					style : 'view_sales.css',
+					date : date,
+					sales : result,
+					total : total
+				});
+
+			}
+		}
 	});
+});
+
+//daily_sales
+router.post('/dailySales', (req, res) => {
+	// console.log("hello");
+	const user_id = req.body.user_id;
+	const date = req.body.date;
+	const date0 = date+' 00:00:00';
+	const date1 = date+' 23:59:59';
+	// const date0 = '2020-04-28 '+'00:00:00';
+	// const date1 = '2020-04-28 '+'23:59:59';
+	console.log(date0);
+
+	/////////////////////////////
+
+	Function.getSalesByDate(user_id,date0,date1, (err,result)=>{
+		if (err) {
+			console.log(err);
+		}else {
+			console.log(result);
+
+			return res.json({result:result});
+
+		}
+	});
+	//////////////////////////////////////////////////////
 
 });
 
