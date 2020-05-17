@@ -168,7 +168,6 @@ module.exports.getSalesByDate =(user_id,date0,date1, callback) =>{
              // console.log(err1);
              return callback(err1,null);
            }else {
-             // console.log(result1);
 
              return callback(null,result1);
            }
@@ -176,9 +175,46 @@ module.exports.getSalesByDate =(user_id,date0,date1, callback) =>{
 
        }
 
-       // return callback(null,result[0]);
-
      }
 
    });
 }
+
+//getSalesByMonth
+module.exports.getSalesByMonth =(user_id,date0,date1, callback) =>{
+  const qry = "select bill_id from bill where user_id=? AND sale_time>=? AND sale_time<=? ";
+  const qry1 = "select * from sale INNER JOIN bill ON sale.bill_id = bill.bill_id where sale.bill_id IN (?) ";
+
+   pool.query(qry,[user_id,date0,date1], (err,result) =>{
+     if (err){
+       return callback(err,null);
+       // console.log(err);
+     }else {
+       console.log(result);
+       if (result[0]==null) {
+         return callback(null,null);
+       }else {
+
+         var billIds = [];
+
+          for (var i = 0; i < result.length; i++) {
+            billIds.push( result[i].bill_id );
+          }
+
+          console.log(billIds);
+         pool.query(qry1,[billIds], (err1,result1) => {
+           if (err1) {
+             // console.log(err1);
+             return callback(err1,null);
+           }else {
+
+             return callback(null,result1);
+           }
+         });
+
+       }
+
+     }
+
+   });
+ }

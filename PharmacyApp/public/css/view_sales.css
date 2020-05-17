@@ -17,7 +17,7 @@
   background-color: #ffeeba;
   font-size: 20px;
   color: #856404;
-  width: 60%;
+  width: 800px;
   margin: auto;
   margin-bottom: 10px;
   border-radius: 20px;
@@ -121,6 +121,23 @@
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-clear-button { display: none; }
 
+/* monthlySales */
+#select-options{
+  display: flex;
+
+}
+
+#month,#year{
+  height: 2em;
+  border-radius: 5px;
+  background-color: #ADD5FA;
+}
+
+#year{
+  margin-left: 10px;
+}
+
+
 /* sales display area */
 .bill-preview{
   width: 100%;
@@ -160,6 +177,34 @@ input[type="date"]::-webkit-clear-button { display: none; }
   text-align: right;
 }
 
+/* for monthly bill preview */
+.bill-preview .m-bill-head{
+  display: flex;
+  font-weight: 500px;
+  color: #5f5f79;
+}
+
+.m-date{
+ width: 15%;
+}
+
+ .m-name{
+  width: 40%;
+}
+
+.m-u-price{
+  width: 20%;
+  text-align: center;
+}
+
+.m-bill-price{
+  width: 25%;
+  text-align: right;
+}
+/* //////////////////////// */
+
+
+
 .bill-preview .bill-wrapper{
   min-height: 150px;
 }
@@ -175,74 +220,108 @@ input[type="date"]::-webkit-clear-button { display: none; }
 
 
 @media  screen and (max-width:1024px) {
-  .add-sale-form{
+
+  .view_sale{
+    width: 100%;
+  }
+
+  /* Danger alert message */
+  .alert-error {
+    width:600px ;
+  }
+
+  .view_sale h1{
+    margin-bottom: 10px;
+  }
+
+  .view-sale-form{
     width: 600px;
+    padding: 10px;
   }
 
   /* toggle forms with button click */
   .form-area{
-    width: 650px;
-
-  }
-
-  .button-box{
-    width: 440px;
-    margin: 35px auto;
-    position: relative;
-    box-shadow: 0 0 10px 9px #5f5f79;
-    border-radius: 10px;
-    text-align: center;
-  }
-
-  .button-box button{
-    font-size: 15px;
-    font-weight: bold;
-  }
-
-  .toggle-btn{
-    padding: 10px 30px;
-    cursor: pointer;
-    background: transparent;
-    border: 0;
-    outline: none;
-    position: relative;
-  }
-
-  #btn{
-    top: 0;
-    left: 0;
-    position: absolute;
-    width: 220px;
-    height: 100%;
-    background: linear-gradient(to right, #2E86C1,#AED6F1);
-    border-radius: 10px;
-    transition: 0.5s;
+    width: 600px;
   }
 
   .sales-div{
-    position: absolute;
-    width: 700px;
-    transition: 0.5s;
+    width: 600px;
   }
 
-  #daily-sales{
-    left: 15px;
+  /* sales display area */
+  .bill-preview{
+    width: 90%;
   }
-
-  #monthly-sales{
-    left: 800px;
-  }
-
 
 }
 
 
 @media  screen and (max-width:660px) {
 
-  .add-sale-form{
-    /* margin-top: 5px; */
-    padding:10px;
+  /* main area */
+  .view_sale{
+    width: 100%;
   }
+
+  /* Danger alert message */
+  .alert-error {
+    padding: 2px;
+    width: 300px;
+    margin-bottom: 2px;
+  }
+
+  .closebtn-error {
+    margin-left: 5px;
+    line-height: 50px;
+  }
+
+  .view_sale h1{
+    margin-bottom: 0px;
+  }
+
+  .view-sale-form{
+    width: 300px;
+    padding: 0px;
+  }
+
+  /* toggle forms with button click */
+  .form-area{
+    width: 300px;
+  }
+
+  .button-box{
+    /* width: 440px; */
+    width: 280px;
+  }
+
+  .button-box button{
+    font-size: 12px;
+
+  }
+
+  .toggle-btn{
+    padding: 0px 10px;
+  }
+
+  #btn{
+    width: 140px;
+  }
+
+  .sales-div{
+    width: 300px;
+  }
+
+
+  /* sales display area */
+  .bill-preview{
+    width: 90%;
+  }
+
+  
+
+
+
+
 
 
 

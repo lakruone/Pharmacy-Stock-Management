@@ -300,6 +300,30 @@ router.post('/dailySales', (req, res) => {
 
 });
 
+// monthlySales
+router.post('/monthlySales', (req, res) => {
+	// console.log("hello");
+	const user_id = req.body.user_id;
+	const month = req.body.month;
+	const year = req.body.year;
+
+	const date0 = year+'-'+month+'-01 00:00:00';
+	const date1 = year+'-'+month+'-31 23:59:59';
+
+console.log(user_id+"user id ");
+	Function.getSalesByMonth(user_id,date0,date1, (err,result)=>{
+		if (err) {
+			console.log(err);
+		}else {
+			// console.log(result);
+			return res.json({result:result});
+			
+		}
+	});
+
+
+});
+
 
 
 module.exports = router;

@@ -69,23 +69,50 @@
           <!-- ////////////////////////////////////////////////////////////// -->
 
 
-          <!-- ////////////////////////////////////////////////////////////// -->
+          <!-- ///////////////////////////monthlySales/////////////////////////////////// -->
           <div id="monthly-sales" class="sales-div">
-            Monthly sales <br>
-            jskasba  <br>
-            sajajbac <br>
+            Select the month to display salary report <br>
+            <div id="select-options">
+              <select id='month' onchange="updateMonthlyBill()">
+                <option selected value=''>--Select Month--</option>
+                <option value='01'>Janaury</option>
+                <option value='02'>February</option>
+                <option value='03'>March</option>
+                <option value='04'>April</option>
+                <option value='05'>May</option>
+                <option value='06'>June</option>
+                <option value='07'>July</option>
+                <option value='08'>August</option>
+                <option value='09'>September</option>
+                <option value='10'>October</option>
+                <option value='11'>November</option>
+                <option value='12'>December</option>
+              </select>
+
+              <select id='year' onchange="updateMonthlyBill()">
+                <option value=''>--Select Year--</option>
+                <option selected value='2020'>2020</option>
+                <option value='2021'>2021</option>
+                <option value='2022'>2022</option>
+                <option value='2023'>2023</option>
+                <option value='2024'>2024</option>
+                <option value='2025'>2025</option>
+              </select>
+
+            </div>
+            <span id="warning" style="color:red"></span>
 
               <div class="bill-preview" id="image-preview">
                 <h3>Bill | {{user.username}}</h3> <hr>
-                <div class="bill-head">
-                  <p class="name">product name</p>
-                  <p class="u-price">unit price</p>
-                  <p class="bill-qty">quantity</p>
-                  <p class="bill-price">price</p>
+                <div class="m-bill-head">
+                  <p class="m-date">date</p>
+                  <p class="m-name">product name</p>
+                  <p class="m-u-price">unit price</p>
+                  <p class="m-bill-price">price</p>
                 </div>
                 <hr>
 
-                <div class="bill-wrapper">
+                <div class="bill-wrapper monthly-biil-wrapper">
 
 
                   <!-- bill forms here -->
@@ -95,7 +122,7 @@
                 <hr>
                 <div class="total">
 
-                  <p>Total  : </p> <p id="totalPrice" class="totalPrice">0</p>
+                  <p>Total  : </p> <p id="totalPrice" class="totalPrice m-total">0</p>
                 </div>
               </div>
             </div>
@@ -121,6 +148,10 @@
 
 ////////////change styles with toggle button/////////////////////
   var parent = document.querySelector(".form-area");
+  var alert_msg_elmnt = document.querySelector('.alert-error');
+  var bill_qty_elmnt = document.querySelector('.bill-qty');
+
+
 
   var x = document.getElementById('daily-sales');
   var y = document.getElementById('monthly-sales');
@@ -129,14 +160,27 @@
   var parentHeight = parseInt(window.getComputedStyle(x).height)+100 + "px";
   parent.style.height = parentHeight;
 
+  var screen_size = window.matchMedia("(max-width: 660px)");
+
+  if (screen_size.matches) {
+    bill_qty_elmnt.innerHTML='qty';
+  }
 
   function monthlySales(){
+    alert_msg_elmnt.style.display = 'none';
+
     x.style.left ="-800px";
-    z.style.left = "220px";
+    // z.style.left = "220px";
     y.style.left ="15px";
 
     parentHeight = parseInt(window.getComputedStyle(y).height)+100 + "px";
     parent.style.height = parentHeight;
+
+    if (screen_size.matches) {
+      z.style.left = "140px";
+    }else {
+       z.style.left = "220px";
+    }
 
   }
 
@@ -148,8 +192,109 @@
     parentHeight = parseInt(window.getComputedStyle(x).height)+100 + "px";
     parent.style.height = parentHeight;
 
+
   }
 
+  function updateMonthlyBill(){
+    var month = document.getElementById('month').value;
+    var year = document.getElementById('year').value;
+    var warning_elmnt = document.getElementById('warning');
+    const user_id = document.getElementById('user-id').value;
+    var total_price_element = document.querySelector('.m-total');
+    var bill_elmnt = checkMonthlyBillDataElementAvailable();
+
+
+
+
+    if (month=='' || year=='') {
+      if (bill_elmnt!=null) {
+        // console.log("do nothing");
+        document.querySelectorAll(".monthly-bill-data").forEach(el => el.remove());
+      }
+
+      total_price_element.innerHTML = "0/=";
+
+      // console.log(year);
+      if (year=='' && month=='') {
+        warning_elmnt.innerHTML = 'please select year and month';
+      }else  if (year=='') {
+        warning_elmnt.innerHTML = 'please select year';
+      }else {
+        warning_elmnt.innerHTML = 'please select a month';
+      }
+
+
+    }else {
+      console.log("continue tasks");
+      warning_elmnt.innerHTML = '';
+
+      var data ={month:month, year:year, user_id:user_id}
+
+      $.post("/monthlySales", data, function(result) {
+
+
+        if (bill_elmnt!=null) {
+          // console.log("do nothing");
+          document.querySelectorAll(".monthly-bill-data").forEach(el => el.remove());
+        }
+
+
+        if (result.result==null) {
+
+          $( "<div class='bill-data monthly-bill-data' > <p class='name' style='color:red'>No sales available for this month.</p></div>").appendTo( ".monthly-biil-wrapper" );
+          total_price_element.innerHTML = "0/=";
+
+        }else {
+          console.log(result);
+          var totalPrice = 0;
+
+
+          for (var i = 0; i < result.result.length; i++) {
+            const product_name = result.result[i].sale_product;
+            const unit_price = result.result[i].unit_price;
+            const quantity = result.result[i].sale_quantity;
+            const price = unit_price*quantity;
+            totalPrice = totalPrice+price;
+
+            var d1 = result.result[i].sale_time.charAt(8);
+            var d2 = result.result[i].sale_time.charAt(9);
+
+            date = month+'-'+d1+d2 ;
+
+            updateMBill(date,product_name,unit_price,price);
+
+          }
+
+          total_price_element.innerHTML = totalPrice+"/=";
+        }
+        monthlySales();
+
+      });
+
+    }
+    monthlySales();
+
+
+  }
+
+  function updateMBill(date,product_name,unit_price,price){
+
+     $( "<div class='bill-data monthly-bill-data' > <p class='m-date'>"+date+"</p> <p class='m-name'>"+product_name+"</p><p class='m-u-price'>"+unit_price+"</p><p class='m-bill-price'>"+price+"</p></div>").appendTo( ".monthly-biil-wrapper" );
+
+      console.log("done");
+
+  }
+
+  function checkMonthlyBillDataElementAvailable() {
+    var daily_sales_element = document.getElementById('monthly-sales');
+    var bill_data_element = daily_sales_element.querySelector('.monthly-bill-data');
+
+    if (bill_data_element==null) {
+      return null;
+    }else {
+      return bill_data_element;
+    }
+  }
 
 
   function checkBillDataElementAvailable(){
@@ -167,6 +312,7 @@
   function updateDailySale(e){
     var date = e.target.value;
     const user_id = document.getElementById('user-id').value;
+    var total_price_element = document.getElementById('totalPrice');
 
 
     console.log(date);
@@ -179,19 +325,20 @@
       // console.log(result.result[0].sale_product);
       var bill_elmnt = checkBillDataElementAvailable();
 
-      if (bill_elmnt==null) {
-        console.log("do nothing");
-      }else {
+      if (bill_elmnt!=null) {
+        // console.log("do nothing");
         document.querySelectorAll(".daily-bill-data").forEach(el => el.remove());
       }
 
 
       if (result.result==null) {
-        console.log("do nothing");
+
+        $( "<div class='bill-data daily-bill-data' > <p class='name' style='color:red'>No sales available for this date.</p></div>").appendTo( ".daily-biil-wrapper" );
+        total_price_element.innerHTML = "0/=";
 
       }else {
 
-        console.log("not ull");
+        console.log("not null");
         for (var i = 0; i < result.result.length; i++) {
           const product_name = result.result[i].sale_product;
           const unit_price = result.result[i].unit_price;
@@ -202,12 +349,13 @@
           updateBill(product_name,unit_price,quantity,price);
 
         }
-        var total_price_element = document.getElementById('totalPrice');
         total_price_element.innerHTML = totalPrice+"/=";
+
       }
 
       dailySales();  //to adjust the height according to new bill
-      
+      alert_msg_elmnt.style.display = 'none';
+
 
     });
 
