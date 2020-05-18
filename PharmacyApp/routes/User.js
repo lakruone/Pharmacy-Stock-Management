@@ -47,6 +47,10 @@ router.post('/activate_account', (req, res) => {
 	const email =req.body.email;
 	var password = req.body.password;
 	const phone =req.body.phone;
+  const host = req.get('host');
+  const protocol = req.protocol;
+
+
 	console.log(username);
 
 	userData = {
@@ -60,6 +64,7 @@ router.post('/activate_account', (req, res) => {
 
 	//check email exists   -----tcoumguxdkxmmaba  <----app password
 	User.checkEmail(email, (err, result) =>{
+
 		if(err) {
 			console.log(err);
 		}
@@ -97,7 +102,7 @@ router.post('/activate_account', (req, res) => {
                      to:email,
                      subject: 'Activate your account | lakru-creations ',
                      //text: req.body.content,
-                     html: '<h3>Activate your lakru-creations account </h3><p>Click the following link to activate the account </p>	<p>http://localhost:5600/activate/'+token+'</p>	<p>username :'+username+'</p>	<p>password :'+password+'</p> <hr>Thank you,<p>Best Regards</p><p>lakru-creations</p>'
+                     html: '<h3>Activate your lakru-creations account </h3><p>Click the following link to activate the account </p>	<p>'+protocol+'://'+host+'/activate/'+token+'</p>	<p>username :'+username+'</p>	<p>password :'+password+'</p> <hr>Thank you,<p>Best Regards</p><p>lakru-creations</p>'
 
                  };
 

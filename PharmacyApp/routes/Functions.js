@@ -317,7 +317,7 @@ console.log(user_id+"user id ");
 		}else {
 			// console.log(result);
 			return res.json({result:result});
-			
+
 		}
 	});
 
@@ -325,5 +325,17 @@ console.log(user_id+"user id ");
 });
 
 
+router.get('/update_stock', (req, res) => {
+
+	console.log("update stock");
+
+	res.send("update stock under construction");
+});
+
+// product_list
+router.get('/product_list', (req, res) => {
+	console.log("update stock");
+	res.send("product list under construction");
+});
 
 module.exports = router;

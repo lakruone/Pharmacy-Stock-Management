@@ -167,7 +167,10 @@
   }
 
   function monthlySales(){
-    alert_msg_elmnt.style.display = 'none';
+    if (alert_msg_elmnt!=null) {
+      alert_msg_elmnt.style.display = 'none';
+
+    }
 
     x.style.left ="-800px";
     // z.style.left = "220px";
