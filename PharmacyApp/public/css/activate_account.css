@@ -1,4 +1,10 @@
-
+.description{
+  width: 90%;
+  margin: auto;
+  margin-top: 20px;
+  min-height: 80vh;
+  align-items: center;
+}
 .large-circle{
   position: absolute;
   top: 0;

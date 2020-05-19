@@ -1,5 +1,5 @@
 
-<main>
+<main class="test">
   <section class="presentation">
     <div class="form-adj">
 
@@ -26,6 +26,7 @@
 
         <form id="register" class="input-group">
           <input id="username-r" type="text" class="input-field" placeholder="Enter Username*" required>
+          <div class="textbox text-cente username-reg">  </div>
           <input id="firstname" type="text" class="input-field" placeholder="Enter First Name">
           <input id="lastname" type="text" class="input-field" placeholder="Enter Last Name">
           <input id="email-r" type="email" class="input-field" placeholder="Enter Email*" required>
@@ -121,6 +122,9 @@
       var email = document.getElementById('email-r').value;
       var password = document.getElementById('password-r').value;
       var phone = document.getElementById('phone').value;
+      var email_display = document.querySelector('.email-reg');
+      var username_display = document.querySelector('.username-reg');
+
       console.log(password);
 
       var data = {username : username ,
@@ -142,10 +146,12 @@
         if (result.message==0) {
           window.location.href="/activate";
         }else if(result.message==1){
-          window.alert("Email already registered");
-        }else {
-          window.alert("Username already exists");
+          // window.alert("Email already registered");
+          email_display.innerHTML = "Email already registered";
 
+        }else {
+          // window.alert("Username already exists");
+          username_display.innerHTML = "Username already exists";
         }
 
       });
@@ -165,6 +171,7 @@
 
     var display_p2 = document.getElementsByClassName("password2-reg")[0];
     var display_phone = document.getElementsByClassName("phone-reg")[0];
+    var email_display = document.querySelector('.email-reg');
 
     var error_count = 0;
 
@@ -174,6 +181,15 @@
     }else  {
       display_phone.innerHTML = "";
     }
+
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+      {
+        email_display.innerHTML = "";
+      }else {
+        email_display.innerHTML = "Invalid email";
+        error_count++;
+
+      }
 
     if (password!=password2) {
       display_p2.innerHTML = "password do not match";
