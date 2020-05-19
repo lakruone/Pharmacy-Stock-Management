@@ -325,11 +325,62 @@ console.log(user_id+"user id ");
 });
 
 
-router.get('/update_stock', (req, res) => {
+router.get('/update_stock',ensureAuthenticated, (req, res) => {
 
+	const user_id = req.user.user_id;
 	console.log("update stock");
 
-	res.send("update stock under construction");
+	Function.getProductList(user_id, (err1,cb1)=>{
+		if (err1) {
+			console.log(err1);
+		}else {
+			const product_list = cb1;
+			product_list.unshift({prodcut_id:0, product_name:"select product"});
+
+			// console.log(product_list);
+			res.render('update_stock', {
+				title : 'Update Stock | '+ req.user.username,
+				style : 'update_stock.css',
+				p_list : product_list,
+			});
+
+
+		}
+	});
+
+//product_data
+router.post('/product_data', (req, res) => {
+	// console.log(req.body.product_id);
+	const product_id = req.body.product_id;
+	Function.getProductDetailsById(product_id, (err,cb)=>{
+		if (err) {
+			console.log(err);
+		}else {
+			return res.json({data:cb});
+		}
+	});
+
+});
+
+
+router.post('/update_stock', (req, res) => {
+
+	const product_id = req.body.product_id;
+	const quantity = req.body.quantity;
+	// console.log("quant "+quantity);
+	Function.UpdateStockQuantity(product_id,quantity, (err,cb)=>{
+		if (err) {
+			console.log(err);
+		}else {
+			console.log(cb);
+			return res.json({qty:cb.quantity});
+		}
+	});
+
+});
+
+
+	// res.send("update stock under construction");
 });
 
 // product_list

@@ -218,3 +218,40 @@ module.exports.getSalesByMonth =(user_id,date0,date1, callback) =>{
 
    });
  }
+
+
+ //getproducit data
+ module.exports.getProductDetailsById =(product_id, callback) =>{
+   const qry = "select * from product where product_id=?";
+    pool.query(qry,[product_id], (err,result) =>{
+      if (err){
+        return callback(err,null);
+      }else {
+        // console.log(fields);
+        return callback(null,result[0]);
+      }
+    });
+}
+
+
+// UpdateStockQuantity
+module.exports.UpdateStockQuantity =(product_id,quantity, callback) =>{
+  const qry = "update product set quantity=quantity+? where product_id=?";
+  const qry1 = "select quantity from product where product_id=?";
+
+   pool.query(qry,[quantity,product_id], (err,result) =>{
+     if (err){
+       return callback(err,null);
+     }else {
+       // console.log(result);
+       pool.query(qry1,[product_id], (err1,result1) =>{
+         if (err1) {
+           console.log(err);
+         }else {
+           return callback(null,result1[0]);
+
+         }
+       });
+     }
+   });
+}

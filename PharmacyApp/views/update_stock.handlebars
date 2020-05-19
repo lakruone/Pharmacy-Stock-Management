@@ -1,0 +1,143 @@
+<section class="update_stock">
+
+
+  <div class="alert-success">
+  <span class="closebtn-success" onclick="this.parentElement.style.display='none';">&times;</span>
+      Stock updated successfully..!
+  </div>
+
+
+  <!-- {{#if error_msg}}
+  <div class="alert-error">
+  <span class="closebtn-error" onclick="this.parentElement.style.display='none';">&times;</span>
+   {{error_msg}}
+  </div>
+  {{/if}} -->
+
+<div class="update-form">
+
+  <h1>Update Stock</h1>
+
+  <!-- <form  action="/update_stock" method="post"> -->
+
+    <!-- //////////////////////////////////////////// -->
+    <div class="label-area" >
+
+      <div class="p-name" >
+        <label  class="label" >Select Product</label> <br>
+        <select   name="product_id" class="product_id" onchange="updateForm(event);">
+          {{#each p_list}}
+          <option value="{{this.product_id}}">{{this.product_name}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div class="quantity">
+        <label class="label" >Quantity</label> <br>
+        <input type="number" class="qty" name="quantity" value="1" min="1">
+      </div>
+
+    </div>
+    <div class="textbox ">  </div>
+
+
+  <!-- ///////////////////////////////////////////// -->
+
+      <div class="discription">
+
+      <div class="image-preview" id="image-preview">
+        <img src="" alt="Image Preview" class="ip-image">
+        <span class="ip-default-text">Image Preview</span>
+
+      </div>
+
+      <div id="qty-display" >
+        <div class="qty-view">
+          <span>Available Quantity</span>
+        </div>
+        <div class="show-qty">
+
+        </div>
+      </div>
+
+      </div>
+
+    <br>
+  <button type="btn" name="button" class="save-btn" onclick="updateStock();">Update</button>
+
+</div>
+
+
+</section>
+
+
+<script src="/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+
+function updateForm(e){
+
+  const previewContainer = document.getElementById('image-preview');
+  const previewImage = previewContainer.querySelector('.ip-image');
+  const previewDefaultText = previewContainer.querySelector('.ip-default-text');
+  const qty_element = document.querySelector('.show-qty');
+  const textbox_msg = document.querySelector('.textbox');
+
+  if (e.target.value==0) {
+    previewDefaultText.style.display = null;
+    previewImage.style.display = null;
+    previewImage.setAttribute("src", '');
+    qty_element.innerText = '';
+    textbox_msg.innerHTML = "plaease select a product";
+    
+  }else {
+    textbox_msg.innerHTML = "";
+    console.log(e.target.value);
+    data = {product_id:e.target.value}
+
+    $.post("/product_data", data, function(result) {
+      console.log(result);
+
+      if (result.data.image!=null) {
+        const image_src = result.data.image;
+
+        previewDefaultText.style.display = 'none';
+        previewImage.style.display = 'block';
+        previewImage.setAttribute("src", '/uploads/'+image_src );
+      }else {
+        previewDefaultText.style.display = null;
+        previewImage.style.display = null;
+        previewImage.setAttribute("src", '');
+      }
+      qty_element.innerText = result.data.quantity;
+    });
+  }
+}
+
+function updateStock(){
+  const product_id = document.querySelector('.product_id').value;
+  const quantity = document.querySelector('.qty').value;
+  const flash_msg_element = document.querySelector('.alert-success');
+  const qty_element = document.querySelector('.show-qty');
+  const textbox_msg = document.querySelector('.textbox');
+
+  console.log(product_id+ " pro id");
+
+  if (product_id==0) {
+    console.log("plaease select a product");
+    textbox_msg.innerHTML = "plaease select a product";
+  }else {
+    data = {product_id:product_id, quantity:quantity};
+
+    $.post("/update_stock", data, function(result) {
+      console.log(result);
+      flash_msg_element.style.display = 'block';
+      qty_element.innerText = result.qty;
+
+    });
+
+  }
+
+}
+
+</script>
