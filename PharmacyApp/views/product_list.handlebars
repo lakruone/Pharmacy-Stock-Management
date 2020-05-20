@@ -15,7 +15,6 @@
             <div class="image-preview" id="image-preview">
               <img src="/uploads/{{this.image}}" alt="Image Preview" class="ip-image">
               <!-- <span class="ip-default-text">Image Preview</span> -->
-
             </div>
 
             <div id="pro-details" >
@@ -33,14 +32,28 @@
           </div>
 
           <div class="btn-area">
+            <input type="text" style="visibility:hidden; width:0; height:0;" class="product_id"  value="{{this.product_id}}">
             <button type="button" name="button" class="edit-btn" >Edit</button>
-            <button type="button" name="button" class="delete-btn" >Delete</button>
-
+            <button type="button" name="button" class="delete-btn del{{this.product_id}}" onclick="confirmDelete(event);">Delete</button>
           </div>
-
 
         </article>
       </details>
+
+      <div class="test2 pop{{this.product_id}}" style="display:none">
+        <div class="popup " >
+          <div class="pop-content">
+            <div class="close-pop">+</div>
+            <span>Are you sure you want to delete this product.?</span>
+            <div class="pop-btn">
+              <button type="button" name="button" class="cancel-btn" >Cancel</button>
+              <button type="button" name="button" class="del-btn" >Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     {{/each}}
 
     </div>
@@ -52,3 +65,15 @@
 
 
 </section>
+
+<script type="text/javascript">
+
+  function confirmDelete(e){
+    const parentElement = e.target.parentNode;
+    const product_id = parentElement.querySelector('.product_id').value;
+    console.log(product_id);
+    const popClassName = 'pop'+product_id;
+    const popup = document.querySelector('.'+popClassName);
+    popup.style.display = 'block';
+  }
+</script>
