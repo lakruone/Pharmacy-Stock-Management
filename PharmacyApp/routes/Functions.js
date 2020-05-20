@@ -22,7 +22,7 @@ const upload = multer({
 }).single('imgFile');
 
 
-//new product page
+
 router.get('/add_new_product',ensureAuthenticated, (req, res) => {
 	res.render('add_new_product', {
 		title : 'Add New Product | '+req.user.username,
@@ -30,8 +30,6 @@ router.get('/add_new_product',ensureAuthenticated, (req, res) => {
 	});
 });
 
-
-//add new product
 router.post('/add_new',ensureAuthenticated, (req, res) => {
 
 	upload(req,res, (err)=>{
@@ -85,8 +83,6 @@ router.post('/add_new',ensureAuthenticated, (req, res) => {
 
 });
 
-
-//add sale
 router.get('/add_sale',ensureAuthenticated, (req, res) => {
 	Function.getProductList(req.user.user_id, (err,cb)=>{
 		if (err) {
@@ -191,23 +187,6 @@ function saveAndUpdateSale(product_id,quantity,bill_id){
 
 }
 
-//preview_image
-// router.post('/preview_image', (req, res) => {
-// 	console.log(req.body.product_id);
-// 	const product_id = req.body.product_id;
-// 	Function.findProductImage(product_id, (err,cb)=>{
-// 		if (err) {
-// 			console.log(err);
-// 		}else {
-// 			console.log(cb);
-// 			const image_name = cb;
-// 			return res.json({imgName:image_name});
-// 		}
-// 	});
-//
-// });
-
-//price_list
 router.post('/price_list', (req, res) => {
 	// console.log(req.body.product_id);
 	const product_id = req.body.product_id;
@@ -223,8 +202,6 @@ router.post('/price_list', (req, res) => {
 
 });
 
-
-//view sales
 router.get('/view_sale',ensureAuthenticated, (req, res) => {
 	const date = new Date().toISOString().substr(0,10);
 	// const date0 = '2020-04-28 '+'00:00:00';
@@ -273,7 +250,6 @@ router.get('/view_sale',ensureAuthenticated, (req, res) => {
 	});
 });
 
-//daily_sales
 router.post('/dailySales', (req, res) => {
 	// console.log("hello");
 	const user_id = req.body.user_id;
@@ -300,7 +276,6 @@ router.post('/dailySales', (req, res) => {
 
 });
 
-// monthlySales
 router.post('/monthlySales', (req, res) => {
 	// console.log("hello");
 	const user_id = req.body.user_id;
@@ -317,13 +292,9 @@ console.log(user_id+"user id ");
 		}else {
 			// console.log(result);
 			return res.json({result:result});
-
 		}
 	});
-
-
 });
-
 
 router.get('/update_stock',ensureAuthenticated, (req, res) => {
 
@@ -343,12 +314,10 @@ router.get('/update_stock',ensureAuthenticated, (req, res) => {
 				style : 'update_stock.css',
 				p_list : product_list,
 			});
-
-
 		}
 	});
+});
 
-//product_data
 router.post('/product_data', (req, res) => {
 	// console.log(req.body.product_id);
 	const product_id = req.body.product_id;
@@ -361,7 +330,6 @@ router.post('/product_data', (req, res) => {
 	});
 
 });
-
 
 router.post('/update_stock', (req, res) => {
 
@@ -380,13 +348,39 @@ router.post('/update_stock', (req, res) => {
 });
 
 
-	// res.send("update stock under construction");
+// product_list
+router.get('/product_list',ensureAuthenticated, (req, res) => {
+
+	const user_id = req.user.user_id;
+
+	Function.getAllProductDataByUserId(user_id, (err,result)=>{
+		if (err) {
+			console.log(err);
+		}else {
+			console.log(result);
+			res.render('product_list', {
+				title : 'Product List | '+ req.user.username,
+				style : 'product_list.css',
+				p_list:result
+			});
+		}
+	});
 });
 
-// product_list
-router.get('/product_list', (req, res) => {
-	console.log("update stock");
-	res.send("product list under construction");
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;

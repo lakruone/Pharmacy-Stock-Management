@@ -17,7 +17,6 @@ module.exports.saveProduct =(user_id,product_name,quantity,price,image, callback
   });
 }
 
-
 //check for duplicate product names
 module.exports.findProductByName =(product_name,user_id, callback) =>{
   const qry = "select * from product where product_name=? AND user_id=?";
@@ -34,8 +33,6 @@ module.exports.findProductByName =(product_name,user_id, callback) =>{
    });
 }
 
-
-
 //get product list
 module.exports.getProductList =(user_id, callback) =>{
   const qry = "select product_id,product_name from product where user_id=?";
@@ -50,24 +47,6 @@ module.exports.getProductList =(user_id, callback) =>{
 
    });
 }
-
-
-//findProductImage
-// module.exports.findProductImage =(product_id, callback) =>{
-//   const qry = "select image from product where product_id=?";
-//    pool.query(qry,[product_id], (err,result) =>{
-//      if (err){
-//        return callback(err,null);
-//      }else {
-//        // console.log(fields);
-//        return callback(null,result);
-//
-//      }
-//
-//    });
-// }
-
-
 
 //getPriceAndName
 module.exports.getPriceAndName =(product_id, callback) =>{
@@ -84,8 +63,6 @@ module.exports.getPriceAndName =(product_id, callback) =>{
    });
 }
 
-
-
 //insertBill
 module.exports.insertBill =(user_id, callback) =>{
   const qry = "insert into bill(user_id) values(?)";
@@ -100,7 +77,6 @@ module.exports.insertBill =(user_id, callback) =>{
 
    });
 }
-
 
 // reduceStockQuantity
 module.exports.reduceStockQuantity =(product_id,quantity, callback) =>{
@@ -123,8 +99,6 @@ module.exports.reduceStockQuantity =(product_id,quantity, callback) =>{
 
    });
 }
-
-
 
 //addSale
 module.exports.addSale =(bill_id,sale_product,quantity,unit_price, callback) =>{
@@ -219,9 +193,8 @@ module.exports.getSalesByMonth =(user_id,date0,date1, callback) =>{
    });
  }
 
-
  //getproducit data
- module.exports.getProductDetailsById =(product_id, callback) =>{
+module.exports.getProductDetailsById =(product_id, callback) =>{
    const qry = "select * from product where product_id=?";
     pool.query(qry,[product_id], (err,result) =>{
       if (err){
@@ -232,7 +205,6 @@ module.exports.getSalesByMonth =(user_id,date0,date1, callback) =>{
       }
     });
 }
-
 
 // UpdateStockQuantity
 module.exports.UpdateStockQuantity =(product_id,quantity, callback) =>{
@@ -252,6 +224,19 @@ module.exports.UpdateStockQuantity =(product_id,quantity, callback) =>{
 
          }
        });
+     }
+   });
+}
+
+//getAllProductDataByUserId
+module.exports.getAllProductDataByUserId =(user_id, callback) =>{
+  const qry = "select * from product where user_id=?";
+   pool.query(qry,[user_id], (err,result) =>{
+     if (err){
+       return callback(err,null);
+     }else {
+       // console.log(fields);
+       return callback(null,result);
      }
    });
 }

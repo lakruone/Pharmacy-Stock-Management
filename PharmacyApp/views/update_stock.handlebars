@@ -7,18 +7,9 @@
   </div>
 
 
-  <!-- {{#if error_msg}}
-  <div class="alert-error">
-  <span class="closebtn-error" onclick="this.parentElement.style.display='none';">&times;</span>
-   {{error_msg}}
-  </div>
-  {{/if}} -->
-
 <div class="update-form">
 
   <h1>Update Stock</h1>
-
-  <!-- <form  action="/update_stock" method="post"> -->
 
     <!-- //////////////////////////////////////////// -->
     <div class="label-area" >
@@ -89,7 +80,7 @@ function updateForm(e){
     previewImage.setAttribute("src", '');
     qty_element.innerText = '';
     textbox_msg.innerHTML = "plaease select a product";
-    
+
   }else {
     textbox_msg.innerHTML = "";
     console.log(e.target.value);

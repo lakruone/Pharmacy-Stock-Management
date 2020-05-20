@@ -1,0 +1,54 @@
+<section class="product_list">
+
+<div class="product-list-form">
+
+  <h1>Product List</h1>
+
+  <div class="collpse-area">
+
+    {{#each p_list}}
+    <details >
+        <summary>{{this.product_name}}</summary>
+        <article>
+          <div class="discription">
+
+            <div class="image-preview" id="image-preview">
+              <img src="/uploads/{{this.image}}" alt="Image Preview" class="ip-image">
+              <!-- <span class="ip-default-text">Image Preview</span> -->
+
+            </div>
+
+            <div id="pro-details" >
+              <div class="labels">
+              <div class="test">
+                <label  class="label" >Price : </label> <span>{{this.price}}/=  </span>
+              </div>
+
+              <div class="test">
+                <label  class="label" >Quantity available: </label> <span>{{this.quantity}}</span>
+              </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="btn-area">
+            <button type="button" name="button" class="edit-btn" >Edit</button>
+            <button type="button" name="button" class="delete-btn" >Delete</button>
+
+          </div>
+
+
+        </article>
+      </details>
+    {{/each}}
+
+    </div>
+
+
+
+
+</div>
+
+
+</section>

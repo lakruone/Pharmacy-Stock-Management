@@ -237,6 +237,9 @@
     width: 100%;
 
   }
+  .alert-success, .alert-error{
+    width: 100%;
+  }
 
 }
 
